@@ -7,6 +7,7 @@ const Likes = require('../models/Likes');
 
 exports.getAllPosts = async (req, res) => {
   try {
+    throw new Error('Error');
     // Get all posts and corresponding userId
     const posts = await Post.findAll({
       attributes: ['id', 'content', 'imageUrl', 'created_at'],

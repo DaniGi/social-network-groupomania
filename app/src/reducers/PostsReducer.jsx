@@ -1,6 +1,7 @@
 const getAllPosts = (state, APIresponse) => {
-  if (!APIresponse) {
-    return { ...state, error: APIresponse.response.error };
+  if (APIresponse.message || APIresponse.error) {
+    const error = `error: ${APIresponse.message || APIresponse.error}`;
+    return { ...state, error, isLoading: false };
   }
   return { ...state, posts: APIresponse.posts, isLoading: false };
 };

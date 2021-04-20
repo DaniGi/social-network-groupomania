@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { UserContext } from '../contexts/UserContext';
-import { usePosts } from '../contexts/PostsContext';
+// import { usePosts } from '../contexts/PostsContext';
 
 import { CommentsContext } from '../contexts/CommentsContext';
 
