@@ -6,11 +6,19 @@ const getAllPosts = (state, APIresponse) => {
   return { ...state, posts: APIresponse.posts, isLoading: false };
 };
 
-const addPost = (state, APIresponse) => {
-  if (!APIresponse) {
-    return { ...state, error: APIresponse.response.error };
+const addPost = (state, APIresponse, user) => {
+  if (APIresponse.message || APIresponse.error) {
+    const error = `error: ${APIresponse.message || APIresponse.error}`;
+    return { ...state, error, isLoading: false };
   }
-  return { ...state, posts: [APIresponse, ...state.posts], isLoading: false };
+  const newPost = {
+    ...APIresponse.post,
+    username: user.name,
+    profilePicture: user.profilePicture,
+    commentsCount: 0,
+  };
+
+  return { ...state, posts: [newPost, ...state.posts], isLoading: false, isCreating: false };
 };
 
 const deletePost = (state, APIresponse, id) => {
@@ -25,6 +33,7 @@ export const initialState = {
   posts: [],
   isLoading: false,
   error: null,
+  isCreating: false,
 };
 
 export function PostsReducer(state, action) {
@@ -32,7 +41,7 @@ export function PostsReducer(state, action) {
     case 'get-all-posts':
       return getAllPosts(state, action.payload.response);
     case 'add-post':
-      return addPost(state, action.payload.response);
+      return addPost(state, action.payload.response, action.payload.user);
     case 'delete-post': {
       return deletePost(state, action.payload.response, action.payload.id);
     }
@@ -42,6 +51,8 @@ export function PostsReducer(state, action) {
       return { ...state, isLoading: true };
     case 'action-completed':
       return { ...state, isLoading: false };
+    case 'toogle-is-creating':
+      return { ...state, isCreating: !state.isCreating, error: null };
     default:
       throw new Error();
   }

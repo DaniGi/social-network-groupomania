@@ -1,27 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import PropTypes from 'prop-types';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import { usePosts } from '../contexts/PostsContext';
+import { usePosts } from '../contexts/PostsContext';
 import { UserContext } from '../contexts/UserContext';
 
 import AutogrowTextarea from './AutogrowTextarea';
 import Loader from './Loader';
 
 import { useScrollBlock } from '../utils/useScrollBlock'; // hook to allow/block scrolling
-import { usePOSTFormRequest } from '../utils/usePOSTFormRequest';
 import { fileValidationSchema } from '../utils/fileValidation';
+import { POSTRequest } from '../API/API';
 
 const CREATE_POST_URL = 'http://localhost:5000/posts';
 
 // Create post card that is displayed when user click on add button
-export default function CreatePostCard({ setIsCreatingPost }) {
+export default function CreatePostCard() {
   const [blockScroll, allowScroll] = useScrollBlock();
 
   // when scroll is blocked, the width of the home page changes, and so does the width of the card (width: 100%).
@@ -40,35 +39,19 @@ export default function CreatePostCard({ setIsCreatingPost }) {
 
   // Global states
   const { user } = useContext(UserContext);
-  // const { state, dispatch } = usePosts();
+  const { state, dispatch } = usePosts();
 
   const { register, errors, watch, handleSubmit } = useForm({
     resolver: yupResolver(fileValidationSchema),
   });
   const watchTextarea = watch('textarea', '');
 
-  // Local hooks
-  const [hasRequestError, setHasRequestError] = useState(false);
-
-  // POST post request
-  const { data, isLoading, error, hadleSubmit } = usePOSTFormRequest(CREATE_POST_URL);
-
-  // update global state posts when data change
-  useEffect(() => {
-    if (data.error) {
-      setHasRequestError(true);
-    } else if (data.post) {
-      // if response contains post, add username
-      data.post.username = user.name;
-      data.post.profilePicture = user.profilePicture;
-      // set number of comment equal zero
-      data.post.commentsCount = 0;
-      // Update global state posts with new post to force home re-rendering with new post
-      // setPosts([data.post, ...posts]);
-      // finished post creation
-      setIsCreatingPost(false);
-    }
-  }, [data]);
+  const handleCreatePost = async (data, e) => {
+    e.preventDefault();
+    dispatch({ type: 'is-loading' });
+    const response = await POSTRequest(CREATE_POST_URL, data, true, user.Id);
+    dispatch({ type: 'add-post', payload: { response, user } });
+  };
 
   return (
     <div className="create-post blur blur-blue" style={{ zIndex: '1' }}>
@@ -81,7 +64,7 @@ export default function CreatePostCard({ setIsCreatingPost }) {
                 <button
                   type="button"
                   className="post-btn post-btn__close text-muted rounded-circle"
-                  onClick={() => setIsCreatingPost(false)}
+                  onClick={() => dispatch({ type: 'toogle-is-creating' })}
                 >
                   <i className="fas fa-times fa-lg" />
                 </button>
@@ -89,7 +72,7 @@ export default function CreatePostCard({ setIsCreatingPost }) {
 
               <Card.Body>
                 <Form
-                  onSubmit={handleSubmit(hadleSubmit)}
+                  onSubmit={handleSubmit(handleCreatePost)}
                   className="
                   d-flex
                   flex-column
@@ -114,7 +97,7 @@ export default function CreatePostCard({ setIsCreatingPost }) {
                     )}
                   </Form.Group>
 
-                  {isLoading ? (
+                  {state.isLoading ? (
                     <Loader />
                   ) : (
                     <Button
@@ -128,7 +111,7 @@ export default function CreatePostCard({ setIsCreatingPost }) {
                   )}
                 </Form>
 
-                {(hasRequestError || error) && (
+                {state.error && (
                   <div className="text-danger text-center fw-bold">
                     Sorry, there was an error creating your post. <br /> Please try again later.
                   </div>
@@ -141,7 +124,3 @@ export default function CreatePostCard({ setIsCreatingPost }) {
     </div>
   );
 }
-
-CreatePostCard.propTypes = {
-  setIsCreatingPost: PropTypes.func.isRequired,
-};

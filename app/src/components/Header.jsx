@@ -1,5 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Container from 'react-bootstrap/Container';
@@ -11,6 +11,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 import { UserContext } from '../contexts/UserContext';
 import { SearchContext } from '../contexts/SearchContext';
+import { usePosts } from '../contexts/PostsContext';
 
 import CreatePostCard from './CreatePostCard';
 import { useLogout } from '../utils/useLogout';
@@ -19,16 +20,14 @@ function Header({ location }) {
   // Global states
   const { user } = useContext(UserContext);
   const { setSearchValue } = useContext(SearchContext);
-
-  // if user click on add button isCreatingPost=true and CreatePostCard is displayed
-  const [isCreatingPost, setIsCreatingPost] = useState(false);
+  const { state, dispatch } = usePosts();
 
   // when user click Log Out button, clear localStorage, unset global state user
   const logOut = useLogout();
 
   return (
     <div className="bg-primary text-white">
-      {isCreatingPost && <CreatePostCard setIsCreatingPost={setIsCreatingPost} />}
+      {state.isCreating && <CreatePostCard />}
 
       <Container fluid="md">
         <Navbar collapseOnSelect expand="md" bg="primary" variant="dark">
@@ -69,7 +68,7 @@ function Header({ location }) {
                     >
                       <Nav.Item
                         className="d-flex align-items-center p-25 mx-2 rounded-circle"
-                        onClick={() => setIsCreatingPost(true)}
+                        onClick={() => dispatch({ type: 'toogle-is-creating' })}
                       >
                         <i className="icon icon-add" />
                       </Nav.Item>

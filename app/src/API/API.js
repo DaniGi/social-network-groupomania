@@ -12,18 +12,33 @@ export const GETRequest = (GET_URL) => {
   );
 };
 
-export const POSTRequest = (POST_URL, body) => {
+export const POSTRequest = (POST_URL, body, isForm = false, UserId) => {
+  let reqBody = {};
+  if (isForm) {
+    reqBody = new FormData();
+    reqBody.append('content', JSON.stringify({ textarea: body.textarea, UserId }));
+    reqBody.append('image', body.picture[0]);
+  } else {
+    reqBody = JSON.stringify({
+      content: body,
+      UserId,
+    });
+  }
+
   return (
     fetch(POST_URL, {
       method: 'POST',
-      body: JSON.stringify(body),
+      body: reqBody,
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
       .then((res) => res.json())
       // eslint-disable-next-line consistent-return
-      .catch((error) => error)
+      .catch((error) => {
+        console.log(error);
+        return error;
+      })
   );
 };
 
