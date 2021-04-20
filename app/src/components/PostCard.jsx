@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { UserContext } from '../contexts/UserContext';
-// import { usePosts } from '../contexts/PostsContext';
 
 import { CommentsContext } from '../contexts/CommentsContext';
 
@@ -27,7 +26,6 @@ const remove = require('lodash/remove');
 export default function PostCard({ post }) {
   // Global states
   const { user, setUser } = useContext(UserContext);
-  // const { state, dispatch } = usePosts();
   const { comments, setComments } = useContext(CommentsContext);
 
   // Hooks
@@ -119,10 +117,10 @@ export default function PostCard({ post }) {
     <>
       {isModifyingPost && (
         <ModifyCard
-          setIsModifying={setIsModifyingPost}
           element={post}
           title="post"
           modifyURL={`http://localhost:5000/posts/${post.id}`}
+          setIsModifying={setIsModifyingPost}
         />
       )}
 

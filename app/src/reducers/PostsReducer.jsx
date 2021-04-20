@@ -22,8 +22,9 @@ const addPost = (state, APIresponse, user) => {
 };
 
 const deletePost = (state, APIresponse, id) => {
-  if (!APIresponse) {
-    return { ...state, error: APIresponse.response.error };
+  if (!APIresponse || APIresponse.error) {
+    const error = APIresponse.error ? APIresponse.error : 'Error deleting post';
+    return { ...state, error, isLoading: false };
   }
   const filteredPosts = state.posts.filter((post) => post.id !== id);
   return { ...state, posts: [...filteredPosts], isLoading: false };
@@ -42,7 +43,7 @@ const modifyPost = (state, APIresponse, element) => {
     return post;
   });
 
-  return { posts, isLoading: false, isModifying: false };
+  return { posts, isLoading: false };
 };
 
 export const initialState = {
@@ -50,7 +51,6 @@ export const initialState = {
   isLoading: false,
   error: null,
   isCreating: false,
-  isModifying: false,
 };
 
 export function PostsReducer(state, action) {
@@ -60,7 +60,7 @@ export function PostsReducer(state, action) {
     case 'add-post':
       return addPost(state, action.payload.response, action.payload.user);
     case 'delete-post':
-      return deletePost(state, action.payload.response, action.payload.id);
+      return deletePost(state, action.payload.response, action.payload.postId);
     case 'modify-post':
       return modifyPost(state, action.payload.response, action.payload.element);
     case 'is-loading':

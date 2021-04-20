@@ -53,12 +53,20 @@ export const PUTRequest = (PUT_URL, data, UserId) => {
     .catch((error) => error);
 };
 
-export const DELETERequest = (DELETE_URL, body) => {
+export const DELETERequest = (DELETE_URL, body, UserId) => {
+  const reqBody = body.password
+    ? {
+        content: body,
+        UserId,
+      }
+    : { UserId };
+
   return fetch(DELETE_URL, {
     method: 'DELETE',
-    body: JSON.stringify(body),
+    body: JSON.stringify(reqBody),
     headers: {
-      'Content-type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   })
     .then((res) => res.json())

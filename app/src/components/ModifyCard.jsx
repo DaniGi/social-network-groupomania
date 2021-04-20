@@ -23,7 +23,7 @@ import { PUTRequest } from '../API/API';
 const capitalize = require('lodash/capitalize');
 
 // Modify post or comment card that is displayed when user click on modify button
-export default function ModifyCard({ setIsModifying, element, title, modifyURL }) {
+export default function ModifyCard({ element, title, modifyURL, setIsModifying }) {
   const [blockScroll, allowScroll] = useScrollBlock();
 
   // when scroll is blocked, the width of the home page changes, and so does the width of the card (width: 100%).
