@@ -1,0 +1,73 @@
+$primary:       #091F44;
+$secondary:     #D0515A;
+$textarea-bg-color: rgba(92, 89, 89, 0.1);
+
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+.btn-outline-danger:hover > i{
+  color: #fff !important;
+}
+
+.rounded-4 {
+  border-radius: 1.3rem !important;
+}
+
+.m-25 {
+  margin: 0.8rem !important;
+}
+
+.p-25 {
+  padding: 0.8rem !important;
+}
+
+.px-25 {
+  padding-right: 0.8rem !important;
+  padding-left: 0.8rem !important;
+}
+
+.w-49 {
+  width: 49% !important;
+}
+
+.w-230 {
+  width: 230px !important;
+}
+
+.pe-25 {
+  padding-right: 0.8rem !important;
+}
+
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.background-groupomania {
+  background-image: url("../../images/bckimage.JPG");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-size: cover;
+  height: 40rem;
+}
+
+.blur{
+  backdrop-filter: blur(6px);
+  &-white {
+  background: rgba(255, 255, 255, 0.8);
+  }
+  &-blue {
+  background: change-color($primary, $alpha: 0.8);
+  }
+}
+
+.bg-textarea {
+  background-color: $textarea-bg-color !important;
+}
+
+@import "./loader";
+@import "./header";
+@import "./home";
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";

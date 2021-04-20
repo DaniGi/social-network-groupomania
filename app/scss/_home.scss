@@ -1,0 +1,74 @@
+
+.post{
+  &-likes {
+    padding-left: 5px;
+    padding-top: 4px;
+    padding-bottom: 5px;
+    padding-right: 4px;
+  }
+  &-btn {
+    border: none;
+    background-color: white;
+    &:hover {
+      background-color: #d051593a;
+    }
+    &__send {
+      padding: 1px 10px;
+      height: 36px;
+    }
+    &__close {
+      padding: 5px 10px;
+    }
+  }
+  &-form {
+    background-color: $textarea-bg-color;
+    &__input {
+      outline: none !important;
+      box-shadow: none !important;
+      resize: none !important;
+    }
+  }
+  &-comment {
+    background-color: $textarea-bg-color;
+  }
+  &-view {
+    width: fit-content;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}
+
+.alert-btn-close button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  padding: 0 .25rem 0.50rem .25rem;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .5;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border: none;
+  text-align: center;
+  line-height: 38px;
+  overflow: hidden;
+  background-size: cover;
+  background-position-x: center;
+  &-header {
+    width: 45.59px;
+  height: 45.59px;
+  }
+}

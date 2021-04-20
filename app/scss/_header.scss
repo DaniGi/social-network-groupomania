@@ -1,0 +1,78 @@
+// .bg-white-15 {
+//   background-color: rgba(255, 255, 255, 0.15);
+// }
+
+.icon {
+  filter: invert(100%);
+  background-size: auto;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  &-profile {
+    filter: none;
+    color: white;
+  }
+  &-search {
+    background-position: 0 -612px;
+    background-image: url("../../images/icons-2.png");
+  }
+  &-logout {
+    background-position: 0 -288px;
+    background-image: url("../../images/icons.png");
+  }
+  &-add {
+    background-position: 0 -612px;
+    background-image: url("../../images/icons-2.png");
+  }
+  &-dropdown {
+    filter: invert(50%);
+    color: $secondary;
+    background-position: -2px -126px;
+    background-image: url("../../images/icons-2.png");
+  }
+}
+
+.dropdown-btn {
+  padding: 5px 8px;
+  &:hover {
+    background-color: #d051593a;
+  }
+}
+
+.nav-item {
+  background-color: rgba(255, 255, 255, 0.15);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+  }
+}
+
+.create-post {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  max-width: inherit;
+  &__row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.tooltip > .tooltip-inner {
+  background-color: $secondary;
+  color: white;
+  border: 1px solid $primary;
+}
