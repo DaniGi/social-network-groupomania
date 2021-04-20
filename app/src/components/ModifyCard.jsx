@@ -18,6 +18,7 @@ import Loader from './Loader';
 import { useScrollBlock } from '../utils/useScrollBlock'; // hook to allow/block scrolling
 import { fileValidationSchema } from '../utils/fileValidation';
 import { PUTRequest } from '../API/API';
+import { useComments } from '../contexts/CommentsContext';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const capitalize = require('lodash/capitalize');
@@ -50,12 +51,21 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
   // Global States, user = { id, username, isLogged, isAdmin}
   const { user } = useContext(UserContext);
   const { state, dispatch } = usePosts();
+  const { commentsDispatch } = useComments();
 
   const handleModifyElement = async (data, e) => {
     e.preventDefault();
-    dispatch({ type: 'is-loading' });
     const response = await PUTRequest(modifyURL, data, user.Id);
-    dispatch({ type: 'modify-post', payload: { response, user, element } });
+    if (title === 'post') {
+      dispatch({ type: 'modify-post', payload: { response, user, element } });
+    }
+    if (title === 'comment') {
+      commentsDispatch({
+        type: 'modify-comment',
+        payload: { response, user, id: element.id, content: watchTextarea },
+      });
+    }
+    setIsModifying(false);
   };
 
   return (

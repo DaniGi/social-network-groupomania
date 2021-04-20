@@ -33,6 +33,21 @@ const deleteComment = (state, APIresponse, id) => {
   return { ...state, comments: [...filteredComments], isLoading: false };
 };
 
+const modifyComment = (state, APIresponse, id, content) => {
+  if (APIresponse.error) {
+    const error = `error: ${APIresponse.message || APIresponse.error}`;
+    return { ...state, error, isLoading: false };
+  }
+  // update modified comment's properties
+  const comments = state.comments.map((comment) => {
+    if (comment.id !== id) return comment;
+    comment.content = content;
+    return comment;
+  });
+
+  return { ...state, comments, isLoading: false };
+};
+
 export const initialState = {
   comments: [],
   isLoading: false,
@@ -48,8 +63,10 @@ export function CommentsReducer(state, action) {
       return addComment(state, action.payload.response);
     case 'delete-comment':
       return deleteComment(state, action.payload.response, action.payload.commentId);
-    // case 'modify-comment':
-    //   return modifyComment(state, action.payload.response, action.payload.element);
+    case 'modify-comment': {
+      const { response, id, content } = action.payload;
+      return modifyComment(state, response, id, content);
+    }
     case 'is-loading':
       return { ...state, isLoading: true };
     case 'action-completed':

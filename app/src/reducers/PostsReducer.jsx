@@ -43,7 +43,7 @@ const modifyPost = (state, APIresponse, element) => {
     return post;
   });
 
-  return { posts, isLoading: false };
+  return { ...state, posts, isLoading: false };
 };
 
 const increaseCommentsCount = (state, id) => {
