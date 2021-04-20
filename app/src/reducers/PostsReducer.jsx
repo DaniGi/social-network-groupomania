@@ -46,9 +46,17 @@ const modifyPost = (state, APIresponse, element) => {
   return { posts, isLoading: false };
 };
 
-const updateCommentsCount = (state, id) => {
+const increaseCommentsCount = (state, id) => {
   const posts = state.posts.map((post) => {
     if (post.id === id) post.commentsCount += 1;
+    return post;
+  });
+  return { ...state, posts };
+};
+
+const decreaseCommentsCount = (state, id) => {
+  const posts = state.posts.map((post) => {
+    if (post.id === id) post.commentsCount -= 1;
     return post;
   });
   return { ...state, posts };
@@ -71,8 +79,10 @@ export function PostsReducer(state, action) {
       return deletePost(state, action.payload.response, action.payload.postId);
     case 'modify-post':
       return modifyPost(state, action.payload.response, action.payload.element);
-    case 'update-comments-count':
-      return updateCommentsCount(state, action.payload.id);
+    case 'increase-comments-count':
+      return increaseCommentsCount(state, action.payload.id);
+    case 'decrease-comments-count':
+      return decreaseCommentsCount(state, action.payload.id);
     case 'is-loading':
       return { ...state, isLoading: true };
     case 'action-completed':

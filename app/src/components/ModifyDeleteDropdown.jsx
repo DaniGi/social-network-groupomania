@@ -10,6 +10,7 @@ import { UserContext } from '../contexts/UserContext';
 import Loader from './Loader';
 
 import { DELETERequest } from '../API/API';
+import { useComments } from '../contexts/CommentsContext';
 
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu
@@ -31,44 +32,24 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 ));
 
 // custom card dropdown, it contains delete and modify actions
-export default function ModifyDeleteDropdown({
-  postId,
-  /* commentId, */
-  deleteURL,
-  setIsModifying,
-}) {
+export default function ModifyDeleteDropdown({ postId, commentId, deleteURL, setIsModifying }) {
   // Global state
   const { state, dispatch } = usePosts();
-  // const { comments, setComments } = useContext(CommentsContext);
+  const { commentsDispatch } = useComments();
   const { user } = useContext(UserContext);
 
+  // DELETE post or comment handler
   const handleDeleteElement = async (e) => {
     e.preventDefault();
-    dispatch({ type: 'is-loading' });
     const response = await DELETERequest(deleteURL, e, user.Id);
-    dispatch({ type: 'delete-post', payload: { response, postId } });
+    // if (response.error) --> setHasError(true);
+    if (response.message === 'Post deleted') {
+      dispatch({ type: 'delete-post', payload: { response, postId } });
+    } else if (response.message === 'Comment deleted') {
+      commentsDispatch({ type: 'delete-comment', payload: { response, commentId } });
+      dispatch({ type: 'decrease-comments-count', payload: { id: postId } });
+    }
   };
-
-  // Update global state posts to force home re-rendering with new posts/comments
-  // useEffect(() => {
-  //   if (data.error || error) {
-  //     setHasError(true);
-  // } else if (data.message === 'Post deleted') {
-  // If post succesfully deleted --> remove it and update global state posts
-  // const newPostList = posts.filter((post) => post.id !== postId);
-  // setPosts(newPostList);
-  // } else if (data.message === 'Comment deleted') {
-  // If comment succesfully deleted --> Update post commentsCount property
-  // const newPostList = posts.map((post) => {
-  //   if (post.id === postId) {
-  //     post.commentsCount -= 1;
-  //   }
-  //   return post;
-  // });
-  // setPosts(newPostList);
-  //     setComments(comments.filter((c) => c.id !== commentId));
-  //   }
-  // }, [data, error]);
 
   return (
     <>
@@ -92,13 +73,13 @@ export default function ModifyDeleteDropdown({
   );
 }
 
-// ModifyDeleteDropdown.defaultProps = {
-//   commentId: null,
-// };
+ModifyDeleteDropdown.defaultProps = {
+  commentId: null,
+};
 
 ModifyDeleteDropdown.propTypes = {
   postId: PropTypes.number.isRequired,
   deleteURL: PropTypes.string.isRequired,
   setIsModifying: PropTypes.func.isRequired,
-  // commentId: PropTypes.number,
+  commentId: PropTypes.number,
 };

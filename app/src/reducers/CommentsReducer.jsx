@@ -24,6 +24,15 @@ const addComment = (state, APIresponse) => {
   };
 };
 
+const deleteComment = (state, APIresponse, id) => {
+  if (!APIresponse || APIresponse.error) {
+    const error = APIresponse.error ? APIresponse.error : 'Error deleting post';
+    return { ...state, error, isLoading: false };
+  }
+  const filteredComments = state.comments.filter((comment) => comment.id !== id);
+  return { ...state, comments: [...filteredComments], isLoading: false };
+};
+
 export const initialState = {
   comments: [],
   isLoading: false,
@@ -37,8 +46,8 @@ export function CommentsReducer(state, action) {
       return getPostComments(state, action.payload.response);
     case 'add-comment':
       return addComment(state, action.payload.response);
-    // case 'delete-comment':
-    //   return deleteComment(state, action.payload.response, action.payload.commentId);
+    case 'delete-comment':
+      return deleteComment(state, action.payload.response, action.payload.commentId);
     // case 'modify-comment':
     //   return modifyComment(state, action.payload.response, action.payload.element);
     case 'is-loading':

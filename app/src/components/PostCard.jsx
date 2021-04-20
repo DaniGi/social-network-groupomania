@@ -55,7 +55,7 @@ export default function PostCard({ post }) {
     commentsDispatch({ type: 'add-comment', payload: { response } });
     // if not error update post's comments count
     if (!commentsState.error) {
-      dispatch({ type: 'update-comments-count', payload: { id: post.id } });
+      dispatch({ type: 'increase-comments-count', payload: { id: post.id } });
     }
   };
 
