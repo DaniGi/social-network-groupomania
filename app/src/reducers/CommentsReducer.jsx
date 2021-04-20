@@ -10,6 +10,20 @@ const getPostComments = (state, APIresponse) => {
   return { ...state, comments: [...state.comments, ...newComments], isLoading: false };
 };
 
+const addComment = (state, APIresponse) => {
+  if (APIresponse.message || APIresponse.error) {
+    const error = `error: ${APIresponse.message || APIresponse.error}`;
+    return { ...state, error, isLoading: false };
+  }
+
+  return {
+    ...state,
+    comments: [...state.comments, APIresponse.comment],
+    isLoading: false,
+    isCreating: false,
+  };
+};
+
 export const initialState = {
   comments: [],
   isLoading: false,
@@ -21,8 +35,8 @@ export function CommentsReducer(state, action) {
   switch (action.type) {
     case 'get-post-comments':
       return getPostComments(state, action.payload.response);
-    // case 'add-comment':
-    //   return addComment(state, action.payload.response, action.payload.user);
+    case 'add-comment':
+      return addComment(state, action.payload.response);
     // case 'delete-comment':
     //   return deleteComment(state, action.payload.response, action.payload.commentId);
     // case 'modify-comment':

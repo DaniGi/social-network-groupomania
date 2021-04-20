@@ -49,7 +49,7 @@ export default function CreatePostCard() {
   const handleCreatePost = async (data, e) => {
     e.preventDefault();
     dispatch({ type: 'is-loading' });
-    const response = await POSTRequest(CREATE_POST_URL, data, true, user.Id);
+    const response = await POSTRequest(CREATE_POST_URL, data, user.Id, true);
     dispatch({ type: 'add-post', payload: { response, user } });
   };
 

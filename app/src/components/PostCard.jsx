@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 
 import { UserContext } from '../contexts/UserContext';
 import { useComments } from '../contexts/CommentsContext';
+import { usePosts } from '../contexts/PostsContext';
 
 import AutogrowTextarea from './AutogrowTextarea';
 import ModifyDeleteDropdown from './ModifyDeleteDropdown';
@@ -17,7 +18,7 @@ import Loader from './Loader';
 import LikeButton from './LikeButton';
 
 import { getDateFormatted } from '../utils/dateFormatting';
-import { GETRequest } from '../API/API';
+import { GETRequest, POSTRequest } from '../API/API';
 
 export default function PostCard({ post }) {
   // Hooks
@@ -31,6 +32,7 @@ export default function PostCard({ post }) {
   // Global states
   const { user } = useContext(UserContext);
   const { commentsState, commentsDispatch } = useComments();
+  const { dispatch } = usePosts();
 
   // GETting post's comments
   useEffect(() => {
@@ -42,12 +44,20 @@ export default function PostCard({ post }) {
     fetchData();
   }, [commentsDispatch, post.id]);
 
-  // const {
-  //   data: newComment,
-  //   error: POSTerror,
-  //   isLoading: isLoadingPOST,
-  //   hadleSubmit,
-  // } = usePOSTRequest(`http://localhost:5000/posts/${post.id}/comments`);
+  const handleAddComment = async (data, e) => {
+    e.preventDefault();
+    commentsDispatch({ type: 'is-loading' });
+    const response = await POSTRequest(
+      `http://localhost:5000/posts/${post.id}/comments`,
+      data,
+      user.Id,
+    );
+    commentsDispatch({ type: 'add-comment', payload: { response } });
+    // if not error update post's comments count
+    if (!commentsState.error) {
+      dispatch({ type: 'update-comments-count', payload: { id: post.id } });
+    }
+  };
 
   // const { data: newLike, error: LikeError, hadleSubmit: toggleLike } = usePOSTRequest(
   //   `http://localhost:5000/posts/${post.id}/likes`,
@@ -81,26 +91,6 @@ export default function PostCard({ post }) {
   // // Update global state posts
   // setPosts(newPostList);
   // }, [newLike]);
-
-  // update global state posts and commets hook when newComment change
-  // useEffect(() => {
-  //   if (newComment.error) {
-  //     setFailedDBRequest(true);
-  //   } else if (newComment.comment) {
-  // Update post commentsCount property
-  // const newPostList = state.posts.map((p) => {
-  //   if (p.id === newComment.comment.postId) {
-  //     p.commentsCount += 1;
-  //   }
-  //   return p;
-  // });
-  // Update global state posts and comments
-  // setComments([...comments, newComment.comment]);
-  // setPosts(newPostList);
-  // set textarea value to empty string
-  //     reset();
-  //   }
-  // }, [newComment]);
 
   return (
     <>
@@ -185,7 +175,7 @@ export default function PostCard({ post }) {
             <Form
               inline
               className="post-form d-flex align-items-center rounded-4 overflow-hidden p-1"
-              onSubmit={handleSubmit(() => {})}
+              onSubmit={handleSubmit(handleAddComment)}
             >
               <AutogrowTextarea
                 message="Write a comment..."

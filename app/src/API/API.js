@@ -9,8 +9,9 @@ export const GETRequest = (GET_URL) => {
     .catch((error) => error);
 };
 
-export const POSTRequest = (POST_URL, data, isForm = false, UserId) => {
+export const POSTRequest = (POST_URL, data, UserId, isForm = false) => {
   let reqBody = {};
+  const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
   if (isForm) {
     reqBody = new FormData();
     reqBody.append('content', JSON.stringify({ textarea: data.textarea, UserId }));
@@ -20,14 +21,13 @@ export const POSTRequest = (POST_URL, data, isForm = false, UserId) => {
       content: data,
       UserId,
     });
+    headers['Content-Type'] = 'application/json';
   }
 
   return fetch(POST_URL, {
     method: 'POST',
     body: reqBody,
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
+    headers,
   })
     .then((res) => res.json())
     .catch((error) => {
