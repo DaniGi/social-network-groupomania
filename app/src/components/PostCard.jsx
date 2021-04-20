@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import { UserContext } from '../contexts/UserContext';
 
-import { CommentsContext } from '../contexts/CommentsContext';
+import { UserContext } from '../contexts/UserContext';
+import { useComments } from '../contexts/CommentsContext';
 
 import AutogrowTextarea from './AutogrowTextarea';
 import ModifyDeleteDropdown from './ModifyDeleteDropdown';
@@ -17,101 +17,90 @@ import Loader from './Loader';
 import LikeButton from './LikeButton';
 
 import { getDateFormatted } from '../utils/dateFormatting';
-import { useGETRequest } from '../utils/useGETRequest';
-import { usePOSTRequest } from '../utils/usePOSTRequest';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-const remove = require('lodash/remove');
+import { GETRequest } from '../API/API';
 
 export default function PostCard({ post }) {
-  // Global states
-  const { user, setUser } = useContext(UserContext);
-  const { comments, setComments } = useContext(CommentsContext);
-
   // Hooks
-  const [failedDBRequest, setFailedDBRequest] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [setHasError] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [isModifyingPost, setIsModifyingPost] = useState(false);
 
   // Form hooks
-  const { handleSubmit, register, reset } = useForm();
+  const { handleSubmit, register } = useForm();
 
-  // Requests Hooks
-  const { data, error: GETerror, isLoading: isLoadingGET } = useGETRequest(
-    `http://localhost:5000/posts/${post.id}/comments`,
-  );
+  // Global states
+  const { user } = useContext(UserContext);
+  const { commentsState, commentsDispatch } = useComments();
 
-  const {
-    data: newComment,
-    error: POSTerror,
-    isLoading: isLoadingPOST,
-    hadleSubmit,
-  } = usePOSTRequest(`http://localhost:5000/posts/${post.id}/comments`);
+  // GETting post's comments
+  useEffect(() => {
+    async function fetchData() {
+      const response = await GETRequest(`http://localhost:5000/posts/${post.id}/comments`);
+      commentsDispatch({ type: 'get-post-comments', payload: { response } });
+    }
+    commentsDispatch({ type: 'is-loading' });
+    fetchData();
+  }, [commentsDispatch, post.id]);
 
-  const { data: newLike, error: LikeError, hadleSubmit: toggleLike } = usePOSTRequest(
-    `http://localhost:5000/posts/${post.id}/likes`,
-  );
+  // const {
+  //   data: newComment,
+  //   error: POSTerror,
+  //   isLoading: isLoadingPOST,
+  //   hadleSubmit,
+  // } = usePOSTRequest(`http://localhost:5000/posts/${post.id}/comments`);
+
+  // const { data: newLike, error: LikeError, hadleSubmit: toggleLike } = usePOSTRequest(
+  //   `http://localhost:5000/posts/${post.id}/likes`,
+  // );
 
   // update global state user and post when data change
-  useEffect(() => {
-    if (newLike.error) {
-      setFailedDBRequest(true);
-      return;
-    }
-    if (newLike.message === 'Liked') {
-      const { likes, ...others } = user;
-      const newLikes = [...likes, post.id];
-      setUser({ ...others, likes: newLikes });
-    } else if (newLike.message === 'Unliked') {
-      const { likes, ...others } = user;
-      const newLikes = remove(likes, (like) => like !== post.id);
-      setUser({ ...others, likes: newLikes });
-    }
-    // const newPostList = state.posts.map((p) => {
-    //   if (p.id === post.id) {
-    //     if (newLike.message === 'Liked') {
-    //       p.likesCount += 1;
-    //     } else if (newLike.message === 'Unliked') {
-    //       p.likesCount -= 1;
-    //     }
-    //   }
-    //   return p;
-    // });
-    // // Update global state posts
-    // setPosts(newPostList);
-  }, [newLike]);
-
-  // update global state posts when data change
-  useEffect(() => {
-    if (data.error) {
-      setFailedDBRequest(true);
-    } else if (data.comments) {
-      const commentsIds = comments.map((comment) => comment.id);
-      const newCommentsList = data.comments.filter((comment) => !commentsIds.includes(comment.id));
-      setComments([...newCommentsList, ...comments]);
-    }
-  }, [data, setComments]);
+  // useEffect(() => {
+  //   if (newLike.error) {
+  //     setFailedDBRequest(true);
+  //     return;
+  //   }
+  //   if (newLike.message === 'Liked') {
+  //     const { likes, ...others } = user;
+  //     const newLikes = [...likes, post.id];
+  //     setUser({ ...others, likes: newLikes });
+  //   } else if (newLike.message === 'Unliked') {
+  //     const { likes, ...others } = user;
+  //     const newLikes = remove(likes, (like) => like !== post.id);
+  //     setUser({ ...others, likes: newLikes });
+  //   }
+  // const newPostList = state.posts.map((p) => {
+  //   if (p.id === post.id) {
+  //     if (newLike.message === 'Liked') {
+  //       p.likesCount += 1;
+  //     } else if (newLike.message === 'Unliked') {
+  //       p.likesCount -= 1;
+  //     }
+  //   }
+  //   return p;
+  // });
+  // // Update global state posts
+  // setPosts(newPostList);
+  // }, [newLike]);
 
   // update global state posts and commets hook when newComment change
-  useEffect(() => {
-    if (newComment.error) {
-      setFailedDBRequest(true);
-    } else if (newComment.comment) {
-      // Update post commentsCount property
-      // const newPostList = state.posts.map((p) => {
-      //   if (p.id === newComment.comment.postId) {
-      //     p.commentsCount += 1;
-      //   }
-      //   return p;
-      // });
-      // Update global state posts and comments
-      setComments([...comments, newComment.comment]);
-      // setPosts(newPostList);
-      // set textarea value to empty string
-      reset();
-    }
-  }, [newComment]);
+  // useEffect(() => {
+  //   if (newComment.error) {
+  //     setFailedDBRequest(true);
+  //   } else if (newComment.comment) {
+  // Update post commentsCount property
+  // const newPostList = state.posts.map((p) => {
+  //   if (p.id === newComment.comment.postId) {
+  //     p.commentsCount += 1;
+  //   }
+  //   return p;
+  // });
+  // Update global state posts and comments
+  // setComments([...comments, newComment.comment]);
+  // setPosts(newPostList);
+  // set textarea value to empty string
+  //     reset();
+  //   }
+  // }, [newComment]);
 
   return (
     <>
@@ -126,9 +115,7 @@ export default function PostCard({ post }) {
 
       <Card className="mb-3 rounded-4">
         <Card.Body>
-          {(GETerror || POSTerror || hasError || failedDBRequest || LikeError) && (
-            <AlertDismissible setHasError={setHasError} />
-          )}
+          {commentsState.error && <AlertDismissible setHasError={setHasError} />}
 
           <div className="d-flex justify-content-between mb-1">
             <div className="d-flex flex-row align-items-center ">
@@ -175,7 +162,7 @@ export default function PostCard({ post }) {
           <hr className="my-2" />
 
           <div className="d-flex justify-content-around">
-            <LikeButton userLiked={user.likes.includes(post.id)} toggleLike={toggleLike} />
+            <LikeButton userLiked={user.likes.includes(post.id)} toggleLike={() => {}} />
             <button type="button" className="post-btn w-49 p-1 rounded text-muted">
               <i className="fas fa-share" /> Share
             </button>
@@ -192,13 +179,13 @@ export default function PostCard({ post }) {
             </Card.Subtitle>
           )}
 
-          {isLoadingGET || isLoadingPOST ? (
+          {commentsState.isLoading ? (
             <Loader />
           ) : (
             <Form
               inline
               className="post-form d-flex align-items-center rounded-4 overflow-hidden p-1"
-              onSubmit={handleSubmit(hadleSubmit)}
+              onSubmit={handleSubmit(() => {})}
             >
               <AutogrowTextarea
                 message="Write a comment..."
@@ -216,7 +203,7 @@ export default function PostCard({ post }) {
           )}
 
           {toggle &&
-            comments
+            commentsState.comments
               .filter((c) => c.postId === post.id)
               .map((comment) => {
                 return (

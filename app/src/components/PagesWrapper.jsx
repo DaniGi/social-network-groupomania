@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -9,17 +9,17 @@ import Loader from './Loader';
 
 import { UserContext } from '../contexts/UserContext';
 import { usePosts } from '../contexts/PostsContext';
-import { CommentsContext } from '../contexts/CommentsContext';
+// import { CommentsContext } from '../contexts/CommentsContext';
 
 export default function PageWrapper(props) {
   // Global states
   const { user } = useContext(UserContext);
   const { state } = usePosts();
-  const { setComments } = useContext(CommentsContext);
+  // const { setComments } = useContext(CommentsContext);
 
-  useEffect(() => {
-    setComments([]);
-  }, [setComments]);
+  // useEffect(() => {
+  //   setComments([]);
+  // }, [setComments]);
 
   return (
     <>
