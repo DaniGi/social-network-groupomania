@@ -164,6 +164,7 @@ exports.updatePost = async (req, res) => {
 
     res.status(201).json({
       message: 'Post updated',
+      newContent: post.content,
       imageUrl: post.imageUrl,
     });
   } catch (error) {

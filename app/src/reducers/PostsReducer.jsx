@@ -29,11 +29,28 @@ const deletePost = (state, APIresponse, id) => {
   return { ...state, posts: [...filteredPosts], isLoading: false };
 };
 
+const modifyPost = (state, APIresponse, element) => {
+  if (APIresponse.error) {
+    const error = `error: ${APIresponse.message || APIresponse.error}`;
+    return { ...state, error, isLoading: false };
+  }
+  // update modified post's properties
+  const posts = state.posts.map((post) => {
+    if (post.id !== element.id) return post;
+    post.content = APIresponse.newContent;
+    post.imageUrl = APIresponse.imageUrl;
+    return post;
+  });
+
+  return { posts, isLoading: false, isModifying: false };
+};
+
 export const initialState = {
   posts: [],
   isLoading: false,
   error: null,
   isCreating: false,
+  isModifying: false,
 };
 
 export function PostsReducer(state, action) {
@@ -42,11 +59,10 @@ export function PostsReducer(state, action) {
       return getAllPosts(state, action.payload.response);
     case 'add-post':
       return addPost(state, action.payload.response, action.payload.user);
-    case 'delete-post': {
+    case 'delete-post':
       return deletePost(state, action.payload.response, action.payload.id);
-    }
     case 'modify-post':
-      return {};
+      return modifyPost(state, action.payload.response, action.payload.element);
     case 'is-loading':
       return { ...state, isLoading: true };
     case 'action-completed':

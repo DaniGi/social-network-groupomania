@@ -8,14 +8,16 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
 import { UserContext } from '../contexts/UserContext';
+import { usePosts } from '../contexts/PostsContext';
 
 import AutogrowTextarea from './AutogrowTextarea';
 import Loader from './Loader';
 
 import { useScrollBlock } from '../utils/useScrollBlock'; // hook to allow/block scrolling
-import { usePUTRequest } from '../utils/usePUTRequest';
 import { fileValidationSchema } from '../utils/fileValidation';
+import { PUTRequest } from '../API/API';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const capitalize = require('lodash/capitalize');
@@ -38,9 +40,6 @@ export default function ModifyCard({ setIsModifying, element, title, modifyURL }
     };
   }, [blockScroll, allowScroll]);
 
-  // Global States, user = { id, username, isLogged, isAdmin}
-  const { user } = useContext(UserContext);
-
   // Form hooks
   const { watch, errors, register, handleSubmit } = useForm({
     resolver: yupResolver(fileValidationSchema),
@@ -48,24 +47,16 @@ export default function ModifyCard({ setIsModifying, element, title, modifyURL }
   const watchTextarea = watch('textarea', '');
   const watchPicture = watch('picture', '');
 
-  // Local Hooks
-  const [failedDBRequest, setFailedDBRequest] = useState(false);
+  // Global States, user = { id, username, isLogged, isAdmin}
+  const { user } = useContext(UserContext);
+  const { state, dispatch } = usePosts();
 
-  // Requests Hook
-  const { data, error, isLoading, hadleOnSubmit: onSubmitModifyPost } = usePUTRequest(modifyURL);
-
-  // update post or comments content
-  useEffect(() => {
-    if (data.error) {
-      setFailedDBRequest(true);
-    } else if (data.message) {
-      element.content = watchTextarea;
-      setIsModifying(false);
-      if (data.message === 'Post updated') {
-        element.imageUrl = data.imageUrl;
-      }
-    }
-  }, [data]);
+  const handleModifyElement = async (data, e) => {
+    e.preventDefault();
+    dispatch({ type: 'is-loading' });
+    const response = await PUTRequest(modifyURL, data, user.Id);
+    dispatch({ type: 'modify-post', payload: { response, user, element } });
+  };
 
   return (
     <div className="create-post blur blur-blue" style={{ zIndex: '1' }}>
@@ -86,7 +77,7 @@ export default function ModifyCard({ setIsModifying, element, title, modifyURL }
 
               <Card.Body>
                 <Form
-                  onSubmit={handleSubmit(onSubmitModifyPost)}
+                  onSubmit={handleSubmit(handleModifyElement)}
                   className="
                   d-flex
                   flex-column
@@ -114,7 +105,7 @@ export default function ModifyCard({ setIsModifying, element, title, modifyURL }
                     </Form.Group>
                   )}
 
-                  {isLoading ? (
+                  {state.isLoading ? (
                     <Loader />
                   ) : (
                     <Button
@@ -128,7 +119,7 @@ export default function ModifyCard({ setIsModifying, element, title, modifyURL }
                   )}
                 </Form>
 
-                {(failedDBRequest || error) && (
+                {state.error && (
                   <div className="text-danger text-center fw-bold">
                     Sorry, there was an error updating your {capitalize(title)}. <br /> Please try
                     again later.
