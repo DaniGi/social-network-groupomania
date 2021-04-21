@@ -43,7 +43,7 @@ export default function CreatePostCard({ setIsCreating }) {
     setIsLoading(true);
     setError(false);
     const response = await POSTRequest(CREATE_POST_URL, data, userState.user.Id, true);
-    if (response.message || response.error) {
+    if (response.error || response.message === 'Failed to fetch') {
       setError(true);
     } else {
       dispatch({ type: 'add-post', payload: { response, user: userState.user } });

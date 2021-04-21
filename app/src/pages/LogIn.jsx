@@ -17,7 +17,7 @@ const PAGE = {
 
 export default function LogIn() {
   // Global user state
-  const { userState, dispatchUser } = useUser();
+  const { userState, userDispatch } = useUser();
 
   // States used to check all possible errors and to show custom error message
   const [userExists, setUserExists] = useState(true);
@@ -54,7 +54,7 @@ export default function LogIn() {
     if (response.token) {
       localStorage.setItem('token', response.token);
       localStorage.setItem('userId', response.userId);
-      dispatchUser({ type: 'get-user', payload: { response, userId: response.userId } });
+      userDispatch({ type: 'get-user', payload: { response, userId: response.userId } });
     }
   };
 

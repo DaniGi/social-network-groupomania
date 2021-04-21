@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
@@ -13,8 +13,8 @@ import { useUser } from '../contexts/UserContext';
 import Loader from './Loader';
 
 import { useScrollBlock } from '../hooks/useScrollBlock'; // hook to allow/block scrolling
-import { usePOSTFormRequest } from '../utils/usePOSTFormRequest';
 import { fileValidationSchema } from '../utils/fileValidation';
+import { POSTRequest } from '../API/API';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const capitalize = require('lodash/capitalize');
@@ -24,7 +24,7 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
   const isScrollBlocked = useScrollBlock();
 
   // Global States, user = { id, username, isLogged, isAdmin}
-  const { userState } = useUser();
+  const { userState, userDispatch } = useUser();
 
   // Form hooks
   const { watch, errors, register, handleSubmit } = useForm({
@@ -33,21 +33,41 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
 
   const watchPicture = watch('picture', '');
 
-  // Local Hooks
-  const [failedDBRequest, setFailedDBRequest] = useState(false);
+  // Local states
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  // Requests Hook
-  const { data, error, isLoading, hadleSubmit } = usePOSTFormRequest(modifyURL);
+  const handleModifyProfilePicture = async (data, e) => {
+    e.preventDefault();
+    setHasError(false);
 
-  // update post or comments content
-  useEffect(() => {
-    if (data.error) {
-      setFailedDBRequest(true);
-    } else if (data.message === 'User updated') {
-      userState.user.profilePicture = data.profile_picture;
+    setIsLoading(true);
+    const response = await POSTRequest(modifyURL, data, userState.user.Id, true);
+    setIsLoading(false);
+
+    if (response.error || response.message === 'Failed to fetch') {
+      setHasError(true);
+    } else if (response.message === 'User updated') {
+      userDispatch({
+        type: 'modify-profile-picture',
+        payload: { profilePicture: response.profile_picture },
+      });
       setIsModifying(false);
     }
-  }, [data]);
+  };
+
+  // Requests Hook
+  // const { data, error, isLoading, hadleSubmit } = usePOSTFormRequest(modifyURL);
+
+  // update post or comments content
+  // useEffect(() => {
+  //   if (data.error) {
+  //     setFailedDBRequest(true);
+  //   } else if (data.message === 'User updated') {
+  //     userState.user.profilePicture = data.profile_picture;
+  //     setIsModifying(false);
+  //   }
+  // }, [data]);
 
   return (
     <div className="create-post blur blur-blue" style={{ zIndex: '1' }}>
@@ -68,7 +88,7 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
 
               <Card.Body>
                 <Form
-                  onSubmit={handleSubmit(hadleSubmit)}
+                  onSubmit={handleSubmit(handleModifyProfilePicture)}
                   className="
                   d-flex
                   flex-column
@@ -95,7 +115,7 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
                   )}
                 </Form>
 
-                {(failedDBRequest || error) && (
+                {hasError && (
                   <div className="text-danger text-center fw-bold">
                     Sorry, there was an error updating your {capitalize(title)}. <br /> Please try
                     again later.

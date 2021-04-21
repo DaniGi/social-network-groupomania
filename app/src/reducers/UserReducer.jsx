@@ -30,6 +30,14 @@ const removeLike = (state, postId) => {
   };
 };
 
+const modifyProfilePicture = (state, profilePicture) => {
+  const user = { ...state.user, profilePicture };
+  return {
+    ...state,
+    user,
+  };
+};
+
 export const initialState = {
   user: {
     Id: '',
@@ -54,6 +62,8 @@ export function UserReducer(state, action) {
       return addLike(state, action.payload.postId);
     case 'remove-like':
       return removeLike(state, action.payload.postId);
+    case 'modify-profile-picture':
+      return modifyProfilePicture(state, action.payload.profilePicture);
     default:
       return state;
   }
