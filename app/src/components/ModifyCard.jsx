@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
@@ -24,7 +25,12 @@ const capitalize = require('lodash/capitalize');
 
 // Modify post or comment card that is displayed when user click on modify button
 export default function ModifyCard({ element, title, modifyURL, setIsModifying }) {
+  // Custom hooks
   const isScrollBlocked = useScrollBlock();
+
+  // Local State
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Form hooks
   const { watch, errors, register, handleSubmit } = useForm({
@@ -35,22 +41,29 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
 
   // Global States, user = { id, username, isLogged, isAdmin}
   const { user } = useUser();
-  const { state, dispatch } = usePosts();
+  const { dispatch } = usePosts();
   const { commentsDispatch } = useComments();
 
   const handleModifyElement = async (data, e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(false);
     const response = await PUTRequest(modifyURL, data, user.Id);
-    if (title === 'post') {
-      dispatch({ type: 'modify-post', payload: { response, user, element } });
+    if (response.error || response.message === 'Failed to fetch') {
+      setError(true);
+    } else {
+      if (title === 'post') {
+        dispatch({ type: 'modify-post', payload: { response, user, element } });
+      }
+      if (title === 'comment') {
+        commentsDispatch({
+          type: 'modify-comment',
+          payload: { response, user, id: element.id, content: watchTextarea },
+        });
+      }
+      setIsModifying(false);
     }
-    if (title === 'comment') {
-      commentsDispatch({
-        type: 'modify-comment',
-        payload: { response, user, id: element.id, content: watchTextarea },
-      });
-    }
-    setIsModifying(false);
+    setIsLoading(false);
   };
 
   return (
@@ -100,7 +113,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
                     </Form.Group>
                   )}
 
-                  {state.isLoading ? (
+                  {isLoading ? (
                     <Loader />
                   ) : (
                     <Button
@@ -114,7 +127,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
                   )}
                 </Form>
 
-                {state.error && (
+                {error && (
                   <div className="text-danger text-center fw-bold">
                     Sorry, there was an error updating your {capitalize(title)}. <br /> Please try
                     again later.

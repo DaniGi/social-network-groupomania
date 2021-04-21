@@ -27,10 +27,6 @@ const deletePost = (state, APIresponse, id) => {
 };
 
 const modifyPost = (state, APIresponse, element) => {
-  if (APIresponse.error) {
-    const error = `error: ${APIresponse.message || APIresponse.error}`;
-    return { ...state, error, isLoading: false };
-  }
   // update modified post's properties
   const posts = state.posts.map((post) => {
     if (post.id !== element.id) return post;

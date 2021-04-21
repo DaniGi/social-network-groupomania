@@ -34,10 +34,6 @@ const deleteComment = (state, APIresponse, id) => {
 };
 
 const modifyComment = (state, APIresponse, id, content) => {
-  if (APIresponse.error) {
-    const error = `error: ${APIresponse.message || APIresponse.error}`;
-    return { ...state, error, isLoading: false };
-  }
   // update modified comment's properties
   const comments = state.comments.map((comment) => {
     if (comment.id !== id) return comment;

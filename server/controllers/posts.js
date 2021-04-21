@@ -143,6 +143,7 @@ exports.getPostComments = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
   try {
+    // throw new Error('error')
     const content = JSON.parse(req.body.content);
 
     const post = await Post.findOne({
