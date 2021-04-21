@@ -7,10 +7,6 @@ const getAllPosts = (state, APIresponse) => {
 };
 
 const addPost = (state, APIresponse, user) => {
-  if (APIresponse.message || APIresponse.error) {
-    const error = `error: ${APIresponse.message || APIresponse.error}`;
-    return { ...state, error, isLoading: false };
-  }
   const newPost = {
     ...APIresponse.post,
     username: user.name,

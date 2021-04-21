@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -20,11 +21,16 @@ const CREATE_POST_URL = 'http://localhost:5000/posts';
 
 // Create post card that is displayed when user click on add button
 export default function CreatePostCard() {
+  // Custom hooks
   const isScrollBlocked = useScrollBlock();
+
+  // Local State
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Global states
   const { user } = useUser();
-  const { state, dispatch } = usePosts();
+  const { dispatch } = usePosts();
 
   const { register, errors, watch, handleSubmit } = useForm({
     resolver: yupResolver(fileValidationSchema),
@@ -33,9 +39,15 @@ export default function CreatePostCard() {
 
   const handleCreatePost = async (data, e) => {
     e.preventDefault();
-    dispatch({ type: 'is-loading' });
+    setIsLoading(true);
+    setError(false);
     const response = await POSTRequest(CREATE_POST_URL, data, user.Id, true);
-    dispatch({ type: 'add-post', payload: { response, user } });
+    if (response.message || response.error) {
+      setError(true);
+    } else {
+      dispatch({ type: 'add-post', payload: { response, user } });
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -82,7 +94,7 @@ export default function CreatePostCard() {
                     )}
                   </Form.Group>
 
-                  {state.isLoading ? (
+                  {isLoading ? (
                     <Loader />
                   ) : (
                     <Button
@@ -96,7 +108,7 @@ export default function CreatePostCard() {
                   )}
                 </Form>
 
-                {state.error && (
+                {error && (
                   <div className="text-danger text-center fw-bold">
                     Sorry, there was an error creating your post. <br /> Please try again later.
                   </div>
