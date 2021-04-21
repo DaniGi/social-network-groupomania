@@ -25,6 +25,7 @@ export default function PostCard({ post }) {
   const [hasError, setHasError] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [isModifyingPost, setIsModifyingPost] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Form hooks
   const { handleSubmit, register } = useForm();
@@ -46,17 +47,21 @@ export default function PostCard({ post }) {
 
   const handleAddComment = async (data, e) => {
     e.preventDefault();
-    commentsDispatch({ type: 'is-loading' });
+    setIsLoading(true);
+    setHasError(false);
     const response = await POSTRequest(
       `http://localhost:5000/posts/${post.id}/comments`,
       data,
       user.Id,
     );
-    commentsDispatch({ type: 'add-comment', payload: { response } });
-    // if not error update post's comments count
-    if (!commentsState.error) {
+    if (response.error || response.message === 'Failed to fetch') {
+      setHasError(true);
+    } else {
+      commentsDispatch({ type: 'add-comment', payload: { response } });
       dispatch({ type: 'increase-comments-count', payload: { id: post.id } });
     }
+
+    setIsLoading(false);
   };
 
   // const { data: newLike, error: LikeError, hadleSubmit: toggleLike } = usePOSTRequest(
@@ -169,7 +174,7 @@ export default function PostCard({ post }) {
             </Card.Subtitle>
           )}
 
-          {commentsState.isLoading ? (
+          {isLoading ? (
             <Loader />
           ) : (
             <Form

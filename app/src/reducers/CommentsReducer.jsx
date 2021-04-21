@@ -11,11 +11,6 @@ const getPostComments = (state, APIresponse) => {
 };
 
 const addComment = (state, APIresponse) => {
-  if (APIresponse.message || APIresponse.error) {
-    const error = `error: ${APIresponse.message || APIresponse.error}`;
-    return { ...state, error, isLoading: false };
-  }
-
   return {
     ...state,
     comments: [...state.comments, APIresponse.comment],
