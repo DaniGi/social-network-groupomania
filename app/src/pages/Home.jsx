@@ -16,16 +16,14 @@ export default function Home() {
 
   return (
     <>
-      <>
-        {filteredPost.length === 0 ? (
-          <div className="text-muted">
-            No posts found for your search:{' '}
-            <span className="fw-bold text-primary">{searchValue}</span>
-          </div>
-        ) : (
-          filteredPost.map((post) => <PostCard post={post} key={post.id} />)
-        )}
-      </>
+      {state.posts.length && filteredPost.length === 0 ? (
+        <div className="text-muted">
+          No posts found for your search:{' '}
+          <span className="fw-bold text-primary">{searchValue}</span>
+        </div>
+      ) : (
+        filteredPost.map((post) => <PostCard post={post} key={post.id} />)
+      )}
     </>
   );
 }

@@ -22,12 +22,7 @@ export default function PageWrapper(props) {
 
   // Global states
   const { user } = useUser();
-  const { dispatch } = usePosts();
-  // const { setComments } = useContext(CommentsContext);
-
-  // useEffect(() => {
-  //   setComments([]);
-  // }, [setComments]);
+  const { state, dispatch } = usePosts();
 
   // Getting all posts
   useEffect(() => {
@@ -50,7 +45,7 @@ export default function PageWrapper(props) {
       <Container fluid className="py-4 py-xxl-6">
         <Row className="d-flex justify-content-center">
           <Col sm={10} md={8} lg={6} xl={6} className="col-xxl-4">
-            {isLoading && <Loader />}
+            {(isLoading || state.posts.length === 0) && <Loader />}
             {!isLoading && hasError && (
               <div className="text-danger text-center pt-3 fw-bold">
                 <i className="fas fa-exclamation rounded-circle border border-2 border-danger py-2 px-25" />{' '}
