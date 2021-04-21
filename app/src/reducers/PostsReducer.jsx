@@ -46,6 +46,22 @@ const decreaseCommentsCount = (state, id) => {
   return { ...state, posts };
 };
 
+const increaseLikesCount = (state, id) => {
+  const posts = state.posts.map((post) => {
+    if (post.id === id) post.likesCount += 1;
+    return post;
+  });
+  return { ...state, posts };
+};
+
+const decreaseLikesCount = (state, id) => {
+  const posts = state.posts.map((post) => {
+    if (post.id === id) post.likesCount -= 1;
+    return post;
+  });
+  return { ...state, posts };
+};
+
 export const initialState = {
   posts: [],
 };
@@ -64,6 +80,10 @@ export function PostsReducer(state, action) {
       return increaseCommentsCount(state, action.payload.id);
     case 'decrease-comments-count':
       return decreaseCommentsCount(state, action.payload.id);
+    case 'increase-likes-count':
+      return increaseLikesCount(state, action.payload.id);
+    case 'decrease-likes-count':
+      return decreaseLikesCount(state, action.payload.id);
     default:
       return state;
   }

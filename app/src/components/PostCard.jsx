@@ -31,7 +31,7 @@ export default function PostCard({ post }) {
   const { handleSubmit, register } = useForm();
 
   // Global states
-  const { userState } = useUser();
+  const { userState, userDispatch } = useUser();
   const { commentsState, commentsDispatch } = useComments();
   const { dispatch } = usePosts();
 
@@ -70,38 +70,28 @@ export default function PostCard({ post }) {
     setIsLoading(false);
   };
 
-  // const { data: newLike, error: LikeError, hadleSubmit: toggleLike } = usePOSTRequest(
-  //   `http://localhost:5000/posts/${post.id}/likes`,
-  // );
+  const toggleLike = async (data) => {
+    setHasError(false);
 
-  // update global state user and post when data change
-  // useEffect(() => {
-  //   if (newLike.error) {
-  //     setFailedDBRequest(true);
-  //     return;
-  //   }
-  //   if (newLike.message === 'Liked') {
-  //     const { likes, ...others } = user;
-  //     const newLikes = [...likes, post.id];
-  //     setUser({ ...others, likes: newLikes });
-  //   } else if (newLike.message === 'Unliked') {
-  //     const { likes, ...others } = user;
-  //     const newLikes = remove(likes, (like) => like !== post.id);
-  //     setUser({ ...others, likes: newLikes });
-  //   }
-  // const newPostList = state.posts.map((p) => {
-  //   if (p.id === post.id) {
-  //     if (newLike.message === 'Liked') {
-  //       p.likesCount += 1;
-  //     } else if (newLike.message === 'Unliked') {
-  //       p.likesCount -= 1;
-  //     }
-  //   }
-  //   return p;
-  // });
-  // // Update global state posts
-  // setPosts(newPostList);
-  // }, [newLike]);
+    const response = await POSTRequest(
+      `http://localhost:5000/posts/${post.id}/likes`,
+      data,
+      userState.user.Id,
+    );
+
+    if (response.error || response.message === 'Failed to fetch') {
+      setHasError(true);
+      return;
+    }
+
+    if (response.message === 'Liked') {
+      userDispatch({ type: 'add-like', payload: { postId: post.id } });
+      dispatch({ type: 'increase-likes-count', payload: { id: post.id } });
+    } else if (response.message === 'Unliked') {
+      userDispatch({ type: 'remove-like', payload: { postId: post.id } });
+      dispatch({ type: 'decrease-likes-count', payload: { id: post.id } });
+    }
+  };
 
   return (
     <>
@@ -163,7 +153,10 @@ export default function PostCard({ post }) {
           <hr className="my-2" />
 
           <div className="d-flex justify-content-around">
-            <LikeButton userLiked={userState.user.likes.includes(post.id)} toggleLike={() => {}} />
+            <LikeButton
+              userLiked={userState.user.likes.includes(post.id)}
+              toggleLike={toggleLike}
+            />
             <button type="button" className="post-btn w-49 p-1 rounded text-muted">
               <i className="fas fa-share" /> Share
             </button>
