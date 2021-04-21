@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -13,7 +13,7 @@ import { UserContext } from '../contexts/UserContext';
 import AutogrowTextarea from './AutogrowTextarea';
 import Loader from './Loader';
 
-import { useScrollBlock } from '../utils/useScrollBlock'; // hook to allow/block scrolling
+import { useScrollBlock } from '../hooks/useScrollBlock'; // hook to allow/block scrolling
 import { fileValidationSchema } from '../utils/fileValidation';
 import { POSTRequest } from '../API/API';
 
@@ -21,21 +21,7 @@ const CREATE_POST_URL = 'http://localhost:5000/posts';
 
 // Create post card that is displayed when user click on add button
 export default function CreatePostCard() {
-  const [blockScroll, allowScroll] = useScrollBlock();
-
-  // when scroll is blocked, the width of the home page changes, and so does the width of the card (width: 100%).
-  // To avoid seeing the card changing width when it becomes visible this state block its first rendering
-  const [isScrollBlocked, SetIsScrollBlocked] = useState(false);
-
-  // Blocking scroll on component mount, allowing scroll on component unmount
-  useEffect(() => {
-    blockScroll();
-    SetIsScrollBlocked(true);
-    return () => {
-      allowScroll();
-      SetIsScrollBlocked(false);
-    };
-  }, [blockScroll, allowScroll]);
+  const isScrollBlocked = useScrollBlock();
 
   // Global states
   const { user } = useContext(UserContext);

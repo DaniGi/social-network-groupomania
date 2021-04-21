@@ -14,7 +14,7 @@ import { SearchContext } from '../contexts/SearchContext';
 import { usePosts } from '../contexts/PostsContext';
 
 import CreatePostCard from './CreatePostCard';
-import { useLogout } from '../utils/useLogout';
+import { useLogout } from '../hooks/useLogout';
 
 function Header({ location }) {
   // Global states

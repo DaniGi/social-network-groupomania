@@ -8,25 +8,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
-import { useScrollBlock } from '../utils/useScrollBlock'; // hook to allow/block scrolling
+import { useScrollBlock } from '../hooks/useScrollBlock'; // hook to allow/block scrolling
 import { useDELETERequest } from '../utils/useDELETERequest';
 import { UserContext } from '../contexts/UserContext';
 import Loader from './Loader';
-import { useLogout } from '../utils/useLogout';
+import { useLogout } from '../hooks/useLogout';
 
 export default function DeleteUserCard({ setIsDeletingUser }) {
-  const [blockScroll, allowScroll] = useScrollBlock();
-  const [isScrollBlocked, SetIsScrollBlocked] = useState(false);
-
-  // Blocking scroll on component mount, allowing scroll on component unmount
-  useEffect(() => {
-    blockScroll();
-    SetIsScrollBlocked(true);
-    return () => {
-      allowScroll();
-      SetIsScrollBlocked(false);
-    };
-  }, [blockScroll, allowScroll]);
+  const isScrollBlocked = useScrollBlock();
 
   // when user click Log Out button, clear localStorage, unset global state user
   const logOut = useLogout();

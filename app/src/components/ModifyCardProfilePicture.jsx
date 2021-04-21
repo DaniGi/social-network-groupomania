@@ -12,7 +12,7 @@ import { UserContext } from '../contexts/UserContext';
 
 import Loader from './Loader';
 
-import { useScrollBlock } from '../utils/useScrollBlock'; // hook to allow/block scrolling
+import { useScrollBlock } from '../hooks/useScrollBlock'; // hook to allow/block scrolling
 import { usePOSTFormRequest } from '../utils/usePOSTFormRequest';
 import { fileValidationSchema } from '../utils/fileValidation';
 
@@ -21,21 +21,7 @@ const capitalize = require('lodash/capitalize');
 
 // Modify post or comment card that is displayed when user click on modify button
 export default function ModifyCard({ setIsModifying, title, modifyURL }) {
-  const [blockScroll, allowScroll] = useScrollBlock();
-
-  // when scroll is blocked, the width of the home page changes, and so does the width of the card (width: 100%).
-  // To avoid seeing the card changing width when it becomes visible this state block its first rendering
-  const [isScrollBlocked, SetIsScrollBlocked] = useState(false);
-
-  // Blocking scroll on component mount, allowing scroll on component unmount
-  useEffect(() => {
-    blockScroll();
-    SetIsScrollBlocked(true);
-    return () => {
-      allowScroll();
-      SetIsScrollBlocked(false);
-    };
-  }, [blockScroll, allowScroll]);
+  const isScrollBlocked = useScrollBlock();
 
   // Global States, user = { id, username, isLogged, isAdmin}
   const { user } = useContext(UserContext);
