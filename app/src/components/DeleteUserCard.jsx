@@ -21,7 +21,7 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
   const logOut = useLogout();
 
   // Global states
-  const { user } = useUser();
+  const { userState } = useUser();
 
   // Local hooks
   const [hasRequestError, setHasRequestError] = useState(false);
@@ -34,7 +34,7 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
 
   // Requests Hooks
   const { data, isLoading, error, handleDelete } = useDELETERequest(
-    `http://localhost:5000/auth/${user.id}`,
+    `http://localhost:5000/auth/${userState.user.id}`,
   );
 
   // if user deleted -> redirect to login page else show error

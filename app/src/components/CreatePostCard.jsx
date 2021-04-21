@@ -30,7 +30,7 @@ export default function CreatePostCard({ setIsCreating }) {
   const [isLoading, setIsLoading] = useState(false);
 
   // Global states
-  const { user } = useUser();
+  const { userState } = useUser();
   const { dispatch } = usePosts();
 
   const { register, errors, watch, handleSubmit } = useForm({
@@ -42,11 +42,11 @@ export default function CreatePostCard({ setIsCreating }) {
     e.preventDefault();
     setIsLoading(true);
     setError(false);
-    const response = await POSTRequest(CREATE_POST_URL, data, user.Id, true);
+    const response = await POSTRequest(CREATE_POST_URL, data, userState.user.Id, true);
     if (response.message || response.error) {
       setError(true);
     } else {
-      dispatch({ type: 'add-post', payload: { response, user } });
+      dispatch({ type: 'add-post', payload: { response, user: userState.user } });
       setIsCreating(false);
     }
     setIsLoading(false);
@@ -80,7 +80,7 @@ export default function CreatePostCard({ setIsCreating }) {
                 >
                   <Form.Group>
                     <AutogrowTextarea
-                      message={`What's on your mind, ${user.name}?`}
+                      message={`What's on your mind, ${userState.user.name}?`}
                       bgColor="textarea"
                       register={register}
                       validationRules={{

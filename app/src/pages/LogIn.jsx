@@ -17,7 +17,7 @@ const PAGE = {
 
 export default function LogIn() {
   // Global user state
-  const { user, dispatchUser } = useUser();
+  const { userState, dispatchUser } = useUser();
 
   // States used to check all possible errors and to show custom error message
   const [userExists, setUserExists] = useState(true);
@@ -33,7 +33,7 @@ export default function LogIn() {
     setIsUserActive(true);
 
     setIsLoading(true);
-    const response = await POSTRequest(LOGIN_URL, e, user.Id);
+    const response = await POSTRequest(LOGIN_URL, e, userState.user.Id);
     setIsLoading(false);
 
     switch (response.error) {
@@ -69,7 +69,7 @@ export default function LogIn() {
         error={hasError}
         loading={isLoading}
       />
-      {user.isLogged && <Redirect to="/" />}
+      {userState.user.isLogged && <Redirect to="/" />}
     </>
   );
 }

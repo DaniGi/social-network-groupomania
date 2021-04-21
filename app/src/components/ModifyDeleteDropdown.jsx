@@ -45,14 +45,14 @@ export default function ModifyDeleteDropdown({
   // Global state
   const { dispatch } = usePosts();
   const { commentsDispatch } = useComments();
-  const { user } = useUser();
+  const { userState } = useUser();
 
   // DELETE post or comment handler
   const handleDeleteElement = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setHasError(false);
-    const response = await DELETERequest(deleteURL, e, user.Id);
+    const response = await DELETERequest(deleteURL, e, userState.user.Id);
     setIsLoading(false);
     if (response.error || response.message === 'Failed to fetch') {
       setHasError(true);

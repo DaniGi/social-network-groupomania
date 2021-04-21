@@ -18,7 +18,7 @@ import DeleteUserCard from '../components/DeleteUserCard';
 
 export default function User() {
   // Global states
-  const { user } = useUser();
+  const { userState } = useUser();
   const { state } = usePosts();
   // const { setComments } = useContext(CommentsContext);
   // const { setSearchValue } = useContext(SearchContext);
@@ -32,7 +32,7 @@ export default function User() {
   //   setSearchValue('');
   // }, [setComments]);
 
-  const userPosts = state.posts.filter((post) => post.username === user.name);
+  const userPosts = state.posts.filter((post) => post.username === userState.user.name);
 
   return (
     <>
@@ -60,16 +60,18 @@ export default function User() {
                   onClick={() => setIsModifyingProfilePicture(true)}
                   className="bg-primary me-2 profile-picture rounded-circle"
                   style={
-                    user.profilePicture && {
-                      backgroundImage: `url(${user.profilePicture})`,
+                    userState.user.profilePicture && {
+                      backgroundImage: `url(${userState.user.profilePicture})`,
                     }
                   }
                 >
-                  {!user.profilePicture && <i className="icon icon-profile fas fa-user fa-lg" />}
+                  {!userState.user.profilePicture && (
+                    <i className="icon icon-profile fas fa-user fa-lg" />
+                  )}
                 </button>
               </OverlayTrigger>
               <div>
-                <Card.Title className="mb-1">{user.name}</Card.Title>
+                <Card.Title className="mb-1">{userState.user.name}</Card.Title>
                 <Card.Subtitle>
                   {userPosts.length ? (
                     <div className="text-muted">

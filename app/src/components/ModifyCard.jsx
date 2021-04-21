@@ -40,7 +40,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
   const watchPicture = watch('picture', '');
 
   // Global States, user = { id, username, isLogged, isAdmin}
-  const { user } = useUser();
+  const { userState } = useUser();
   const { dispatch } = usePosts();
   const { commentsDispatch } = useComments();
 
@@ -48,17 +48,17 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
     e.preventDefault();
     setIsLoading(true);
     setError(false);
-    const response = await PUTRequest(modifyURL, data, user.Id);
+    const response = await PUTRequest(modifyURL, data, userState.user.Id);
     if (response.error || response.message === 'Failed to fetch') {
       setError(true);
     } else {
       if (title === 'post') {
-        dispatch({ type: 'modify-post', payload: { response, user, element } });
+        dispatch({ type: 'modify-post', payload: { response, user: userState.user, element } });
       }
       if (title === 'comment') {
         commentsDispatch({
           type: 'modify-comment',
-          payload: { response, user, id: element.id, content: watchTextarea },
+          payload: { response, user: userState.user, id: element.id, content: watchTextarea },
         });
       }
       setIsModifying(false);
@@ -94,7 +94,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
                 >
                   <Form.Group>
                     <AutogrowTextarea
-                      message={`What's on your mind, ${user.name}?`}
+                      message={`What's on your mind, ${userState.name}?`}
                       bgColor="textarea"
                       defaultValue={element.content}
                       register={register}

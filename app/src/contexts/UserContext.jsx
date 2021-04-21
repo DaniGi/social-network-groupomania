@@ -14,7 +14,7 @@ export const useUser = () => {
 const VERIFY_TOKEN_URL = 'http://localhost:5000/auth/verify';
 
 const UserContextProvider = (props) => {
-  const [user, dispatchUser] = useReducer(UserReducer, initialState);
+  const [userState, userDispatch] = useReducer(UserReducer, initialState);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -24,18 +24,19 @@ const UserContextProvider = (props) => {
       if (response.error) {
         <Redirect to="/login" />;
       } else {
-        dispatchUser({ type: 'get-user', payload: { response, userId } });
+        userDispatch({ type: 'get-user', payload: { response, userId } });
       }
     }
-
+    userDispatch({ type: 'toggle-is-loading' });
     const token = localStorage.getItem('token');
     if (!token) return;
     fetchData();
+    userDispatch({ type: 'toggle-is-loading' });
   }, []);
 
   const value = {
-    user,
-    dispatchUser,
+    userState,
+    userDispatch,
   };
 
   return <UserContext.Provider value={value}>{props.children}</UserContext.Provider>;

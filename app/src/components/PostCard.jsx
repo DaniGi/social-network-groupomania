@@ -31,7 +31,7 @@ export default function PostCard({ post }) {
   const { handleSubmit, register } = useForm();
 
   // Global states
-  const { user } = useUser();
+  const { userState } = useUser();
   const { commentsState, commentsDispatch } = useComments();
   const { dispatch } = usePosts();
 
@@ -58,7 +58,7 @@ export default function PostCard({ post }) {
     const response = await POSTRequest(
       `http://localhost:5000/posts/${post.id}/comments`,
       data,
-      user.Id,
+      userState.user.Id,
     );
     if (response.error || response.message === 'Failed to fetch') {
       setHasError(true);
@@ -139,7 +139,7 @@ export default function PostCard({ post }) {
               </div>
             </div>
 
-            {(post.username === user.name || user.isAdmin) && (
+            {(post.username === userState.user.name || userState.user.isAdmin) && (
               <ModifyDeleteDropdown
                 postId={post.id}
                 setHasError={setHasError}
@@ -163,7 +163,7 @@ export default function PostCard({ post }) {
           <hr className="my-2" />
 
           <div className="d-flex justify-content-around">
-            <LikeButton userLiked={user.likes.includes(post.id)} toggleLike={() => {}} />
+            <LikeButton userLiked={userState.user.likes.includes(post.id)} toggleLike={() => {}} />
             <button type="button" className="post-btn w-49 p-1 rounded text-muted">
               <i className="fas fa-share" /> Share
             </button>

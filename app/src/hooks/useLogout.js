@@ -9,7 +9,7 @@ import { SearchContext } from '../contexts/SearchContext';
 
 export function useLogout() {
   const history = useHistory();
-  const { dispatchUser } = useUser();
+  const { userDispatch } = useUser();
   // const { setComments } = useContext(CommentsContext);
   // const { state } = usePosts();
   const { setSearchValue } = useContext(SearchContext);
@@ -17,7 +17,7 @@ export function useLogout() {
   // when user click Log Out button, clear localStorage, unset global state user
   function logOut() {
     localStorage.clear();
-    dispatchUser({ type: 'clear-user' });
+    userDispatch({ type: 'clear-user' });
     setSearchValue('');
     history.push('/login');
   }

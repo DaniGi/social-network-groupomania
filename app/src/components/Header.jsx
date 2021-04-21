@@ -19,7 +19,7 @@ function Header({ location }) {
   const [isCreating, setIsCreating] = useState(false);
 
   // Global states
-  const { user } = useUser();
+  const { userState } = useUser();
   const { setSearchValue } = useContext(SearchContext);
   // when user click Log Out button, clear localStorage, unset global state user
   const logOut = useLogout();
@@ -36,7 +36,7 @@ function Header({ location }) {
             </Navbar.Brand>
           </Link>
 
-          {user.isLogged && (
+          {userState.user.isLogged && (
             <>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
@@ -77,17 +77,19 @@ function Header({ location }) {
                       placement="bottom"
                       delay={{ show: 0, hide: 0 }}
                       overlay={
-                        <Tooltip className="tooltip">{user.name ? user.name : 'User'}</Tooltip>
+                        <Tooltip className="tooltip">
+                          {userState.user.name ? userState.user.name : 'User'}
+                        </Tooltip>
                       }
                     >
                       <Link to="/user" className="me-2">
-                        {user.profilePicture ? (
+                        {userState.user.profilePicture ? (
                           <Nav.Item className="d-flex align-items-center rounded-circle">
                             <div
                               className="bg-primary rounded-circle profile-picture profile-picture-header"
                               style={
-                                user.profilePicture && {
-                                  backgroundImage: `url(${user.profilePicture})`,
+                                userState.user.profilePicture && {
+                                  backgroundImage: `url(${userState.user.profilePicture})`,
                                 }
                               }
                             />

@@ -24,7 +24,7 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
   const isScrollBlocked = useScrollBlock();
 
   // Global States, user = { id, username, isLogged, isAdmin}
-  const { user } = useUser();
+  const { userState } = useUser();
 
   // Form hooks
   const { watch, errors, register, handleSubmit } = useForm({
@@ -44,7 +44,7 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
     if (data.error) {
       setFailedDBRequest(true);
     } else if (data.message === 'User updated') {
-      user.profilePicture = data.profile_picture;
+      userState.user.profilePicture = data.profile_picture;
       setIsModifying(false);
     }
   }, [data]);

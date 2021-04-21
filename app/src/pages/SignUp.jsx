@@ -16,7 +16,7 @@ const PAGE = {
 };
 
 export default function SignUp() {
-  const { user } = useUser();
+  const { userState } = useUser();
   const history = useHistory();
 
   // States used to check all possible errors and to show custom error message
@@ -31,7 +31,7 @@ export default function SignUp() {
     setHasError(false);
 
     setIsLoading(true);
-    const response = await POSTRequest(SIGNUP_URL, e, user.Id);
+    const response = await POSTRequest(SIGNUP_URL, e, userState.user.Id);
     setIsLoading(false);
 
     if (response.message === 'Added User') {
@@ -55,7 +55,7 @@ export default function SignUp() {
         error={hasError}
         loading={isLoading}
       />
-      {user.isLogged && <Redirect to="/" />}
+      {userState.user.isLogged && <Redirect to="/" />}
     </>
   );
 }

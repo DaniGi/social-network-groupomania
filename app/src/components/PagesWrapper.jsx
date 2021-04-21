@@ -21,7 +21,7 @@ export default function PageWrapper(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   // Global states
-  const { user } = useUser();
+  const { userState } = useUser();
   const { state, dispatch } = usePosts();
 
   // Getting all posts
@@ -58,7 +58,7 @@ export default function PageWrapper(props) {
           </Col>
         </Row>
       </Container>
-      {!user.isLogged && <Redirect to="/login" />}
+      {!userState.isLogged && !userState.isLoading && <Redirect to="/login" />}
     </>
   );
 }

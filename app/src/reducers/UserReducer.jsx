@@ -1,11 +1,14 @@
 const getUser = (state, response, Id) => {
   return {
-    Id,
-    name: response.userName,
-    isLogged: true,
-    isAdmin: response.isAdmin,
-    likes: response.likes,
-    profilePicture: response.profilePicture,
+    ...state,
+    user: {
+      Id,
+      name: response.userName,
+      isLogged: true,
+      isAdmin: response.isAdmin,
+      likes: response.likes,
+      profilePicture: response.profilePicture,
+    },
   };
 };
 
@@ -18,6 +21,7 @@ export const initialState = {
     likes: [],
     profilePicture: null,
   },
+  isLoading: true,
 };
 
 export function UserReducer(state, action) {
@@ -26,7 +30,9 @@ export function UserReducer(state, action) {
       return getUser(state, action.payload.response, action.payload.userId);
     case 'clear-user':
       return initialState;
+    case 'toggle-is-loading':
+      return { ...state, isLoading: !state.isLoading };
     default:
-      throw new Error();
+      return state;
   }
 }

@@ -9,7 +9,7 @@ import ModifyCard from './ModifyCard';
 import { getDateFormatted } from '../utils/dateFormatting';
 
 export default function CommentBox({ comment, postId, setHasError }) {
-  const { user } = useUser();
+  const { userState } = useUser();
   const [isModifyingComment, setIsModifyingComment] = useState(false);
 
   return (
@@ -33,7 +33,7 @@ export default function CommentBox({ comment, postId, setHasError }) {
           <p className="m-0">{comment.content}</p>
         </div>
 
-        {(comment.username === user.name || user.isAdmin) && (
+        {(comment.username === userState.user.name || userState.user.isAdmin) && (
           <ModifyDeleteDropdown
             postId={postId}
             commentId={comment.id}
