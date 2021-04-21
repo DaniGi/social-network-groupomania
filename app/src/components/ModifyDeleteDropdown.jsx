@@ -52,7 +52,7 @@ export default function ModifyDeleteDropdown({
     e.preventDefault();
     setIsLoading(true);
     setHasError(false);
-    const response = await DELETERequest(deleteURL, e, userState.user.Id);
+    const response = await DELETERequest(deleteURL, {}, userState.user.Id);
     setIsLoading(false);
     if (response.error || response.message === 'Failed to fetch') {
       setHasError(true);

@@ -56,19 +56,6 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
     }
   };
 
-  // Requests Hook
-  // const { data, error, isLoading, hadleSubmit } = usePOSTFormRequest(modifyURL);
-
-  // update post or comments content
-  // useEffect(() => {
-  //   if (data.error) {
-  //     setFailedDBRequest(true);
-  //   } else if (data.message === 'User updated') {
-  //     userState.user.profilePicture = data.profile_picture;
-  //     setIsModifying(false);
-  //   }
-  // }, [data]);
-
   return (
     <div className="create-post blur blur-blue" style={{ zIndex: '1' }}>
       <Row className="create-post__row">
