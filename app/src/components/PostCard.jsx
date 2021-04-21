@@ -47,7 +47,6 @@ export default function PostCard({ post }) {
     }
     setIsLoading(true);
     setHasError(false);
-    commentsDispatch({ type: 'is-loading' });
     fetchData();
     setIsLoading(false);
   }, [commentsDispatch, post.id]);

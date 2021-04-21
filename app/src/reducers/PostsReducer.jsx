@@ -1,9 +1,5 @@
 const getAllPosts = (state, APIresponse) => {
-  if (APIresponse.message || APIresponse.error) {
-    const error = `error: ${APIresponse.message || APIresponse.error}`;
-    return { ...state, error, isLoading: false };
-  }
-  return { ...state, posts: APIresponse.posts, isLoading: false };
+  return { ...state, posts: APIresponse.posts };
 };
 
 const addPost = (state, APIresponse, user) => {
@@ -14,12 +10,12 @@ const addPost = (state, APIresponse, user) => {
     commentsCount: 0,
   };
 
-  return { ...state, posts: [newPost, ...state.posts], isLoading: false, isCreating: false };
+  return { ...state, posts: [newPost, ...state.posts] };
 };
 
 const deletePost = (state, APIresponse, id) => {
   const filteredPosts = state.posts.filter((post) => post.id !== id);
-  return { ...state, posts: [...filteredPosts], isLoading: false };
+  return { ...state, posts: [...filteredPosts] };
 };
 
 const modifyPost = (state, APIresponse, element) => {
@@ -31,7 +27,7 @@ const modifyPost = (state, APIresponse, element) => {
     return post;
   });
 
-  return { ...state, posts, isLoading: false };
+  return { ...state, posts };
 };
 
 const increaseCommentsCount = (state, id) => {
@@ -52,7 +48,6 @@ const decreaseCommentsCount = (state, id) => {
 
 export const initialState = {
   posts: [],
-  error: null,
 };
 
 export function PostsReducer(state, action) {
@@ -69,11 +64,7 @@ export function PostsReducer(state, action) {
       return increaseCommentsCount(state, action.payload.id);
     case 'decrease-comments-count':
       return decreaseCommentsCount(state, action.payload.id);
-    case 'is-loading':
-      return { ...state, isLoading: true };
-    case 'action-completed':
-      return { ...state, isLoading: false };
     default:
-      throw new Error();
+      return state;
   }
 }
