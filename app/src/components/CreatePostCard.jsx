@@ -47,6 +47,7 @@ export default function CreatePostCard({ setIsCreating }) {
       setError(true);
     } else {
       dispatch({ type: 'add-post', payload: { response, user } });
+      setIsCreating(false);
     }
     setIsLoading(false);
   };
