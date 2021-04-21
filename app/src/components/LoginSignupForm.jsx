@@ -27,7 +27,6 @@ export default function LoginSignupForm({
   usernameCheck,
   isPasswordCorrect,
   isUserActive,
-  failedDBConnection,
   error,
   loading,
 }) {
@@ -158,12 +157,6 @@ export default function LoginSignupForm({
               </div>
             )}
 
-            {failedDBConnection && (
-              <div className="text-danger text-center pt-3 fw-bold">
-                A connection could not be established. <br /> Please try again later.
-              </div>
-            )}
-
             {error && (
               <div className="text-danger text-center pt-3 fw-bold">
                 An error occurred. <br /> Please try again later.
@@ -189,7 +182,6 @@ LoginSignupForm.propTypes = {
   usernameCheck: PropTypes.bool,
   isPasswordCorrect: PropTypes.bool,
   isUserActive: PropTypes.bool,
-  failedDBConnection: PropTypes.bool.isRequired,
   error: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   page: PropTypes.shape({

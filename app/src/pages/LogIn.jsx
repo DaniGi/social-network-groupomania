@@ -22,14 +22,14 @@ export default function LogIn() {
   // States used to check all possible errors and to show custom error message
   const [userExists, setUserExists] = useState(true);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
-  const [failedDBConnection, setFailedDBConnection] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [isUserActive, setIsUserActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogInUser = async (e) => {
     setUserExists(true);
     setIsPasswordCorrect(true);
-    setFailedDBConnection(false);
+    setHasError(false);
     setIsUserActive(true);
     setIsLoading(true);
 
@@ -48,7 +48,7 @@ export default function LogIn() {
       case undefined:
         break;
       default:
-        setFailedDBConnection(true);
+        setHasError(true);
     }
     if (response.token) {
       localStorage.setItem('token', response.token);
@@ -66,9 +66,8 @@ export default function LogIn() {
         onSubmit={handleLogInUser}
         emailCheck={userExists}
         isPasswordCorrect={isPasswordCorrect}
-        failedDBConnection={failedDBConnection}
         isUserActive={isUserActive}
-        error={failedDBConnection}
+        error={hasError}
         loading={isLoading}
       />
       {user.isLogged && <Redirect to="/" />}
