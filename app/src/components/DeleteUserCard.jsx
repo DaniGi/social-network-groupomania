@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -8,11 +8,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
-import { useScrollBlock } from '../hooks/useScrollBlock'; // hook to allow/block scrolling
-import { useDELETERequest } from '../utils/useDELETERequest';
+import { useScrollBlock } from '../hooks/useScrollBlock';
 import { useUser } from '../contexts/UserContext';
 import Loader from './Loader';
 import { useLogout } from '../hooks/useLogout';
+import { DELETERequest } from '../API/API';
 
 export default function DeleteUserCard({ setIsDeletingUser }) {
   const isScrollBlocked = useScrollBlock();
@@ -24,7 +24,8 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
   const { userState } = useUser();
 
   // Local hooks
-  const [hasRequestError, setHasRequestError] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(true);
   const [sayGoodbye, setSayGoodbye] = useState(false);
 
@@ -32,18 +33,24 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
   const { watch, register, handleSubmit } = useForm();
   const watchPassword = watch('password', '');
 
-  // Requests Hooks
-  const { data, isLoading, error, handleDelete } = useDELETERequest(
-    `http://localhost:5000/auth/${userState.user.id}`,
-  );
+  const handleDeleteUser = async (data, e) => {
+    e.preventDefault();
+    setHasError(false);
+    setIsPasswordCorrect(true);
 
-  // if user deleted -> redirect to login page else show error
-  useEffect(() => {
-    if (data.error === 'Wrong password') {
+    setIsLoading(true);
+    const response = await DELETERequest(
+      `http://localhost:5000/auth/${userState.user.id}`,
+      data,
+      userState.user.Id,
+    );
+    setIsLoading(false);
+
+    if (response.error === 'Wrong password') {
       setIsPasswordCorrect(false);
-    } else if (data.error) {
-      setHasRequestError(true);
-    } else if (data.message === 'User deleted') {
+    } else if (response.error || response.message === 'Failed to fetch') {
+      setHasError(true);
+    } else if (response.message === 'User deleted') {
       setSayGoodbye(true);
       setTimeout(() => {
         setSayGoodbye(false);
@@ -51,7 +58,7 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
         logOut();
       }, 4000);
     }
-  }, [data, setIsDeletingUser, logOut]);
+  };
 
   return (
     <div className="create-post blur blur-blue" style={{ zIndex: '1' }}>
@@ -86,7 +93,7 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
                       <br />
                       Make sure you want to do this.
                     </Card.Text>
-                    <Form onSubmit={handleSubmit(handleDelete)}>
+                    <Form onSubmit={handleSubmit(handleDeleteUser)}>
                       <Form.Group controlId="formPassword" className="pb-2">
                         <Form.Control
                           aria-label="confirm password"
@@ -112,7 +119,7 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
                       )}
                     </Form>
 
-                    {(hasRequestError || error) && (
+                    {hasError && (
                       <div className="text-danger text-center fw-bold">
                         Sorry, there was an error deleting your account. <br /> Please try again
                         later.
