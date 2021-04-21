@@ -48,7 +48,6 @@ export const initialState = {
   comments: [],
   isLoading: false,
   error: null,
-  isCreating: false,
 };
 
 export function CommentsReducer(state, action) {
@@ -67,10 +66,6 @@ export function CommentsReducer(state, action) {
       return { ...state, isLoading: true };
     case 'action-completed':
       return { ...state, isLoading: false };
-    case 'toogle-is-creating':
-      return { ...state, isCreating: !state.isCreating, error: null };
-    case 'toogle-is-modifying':
-      return { ...state, isCreating: !state.isModifying, error: null };
     default:
       throw new Error();
   }

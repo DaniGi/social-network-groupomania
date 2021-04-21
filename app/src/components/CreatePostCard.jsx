@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import PropTypes from 'prop-types';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -20,7 +21,7 @@ import { POSTRequest } from '../API/API';
 const CREATE_POST_URL = 'http://localhost:5000/posts';
 
 // Create post card that is displayed when user click on add button
-export default function CreatePostCard() {
+export default function CreatePostCard({ setIsCreating }) {
   // Custom hooks
   const isScrollBlocked = useScrollBlock();
 
@@ -61,7 +62,7 @@ export default function CreatePostCard() {
                 <button
                   type="button"
                   className="post-btn post-btn__close text-muted rounded-circle"
-                  onClick={() => dispatch({ type: 'toogle-is-creating' })}
+                  onClick={() => setIsCreating(false)}
                 >
                   <i className="fas fa-times fa-lg" />
                 </button>
@@ -121,3 +122,7 @@ export default function CreatePostCard() {
     </div>
   );
 }
+
+CreatePostCard.propTypes = {
+  setIsCreating: PropTypes.func.isRequired,
+};

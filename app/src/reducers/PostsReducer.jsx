@@ -56,9 +56,7 @@ const decreaseCommentsCount = (state, id) => {
 
 export const initialState = {
   posts: [],
-  isLoading: false,
   error: null,
-  isCreating: false,
 };
 
 export function PostsReducer(state, action) {
@@ -79,8 +77,6 @@ export function PostsReducer(state, action) {
       return { ...state, isLoading: true };
     case 'action-completed':
       return { ...state, isLoading: false };
-    case 'toogle-is-creating':
-      return { ...state, isCreating: !state.isCreating, error: null };
     default:
       throw new Error();
   }
