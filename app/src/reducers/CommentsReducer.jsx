@@ -25,10 +25,6 @@ const addComment = (state, APIresponse) => {
 };
 
 const deleteComment = (state, APIresponse, id) => {
-  if (!APIresponse || APIresponse.error) {
-    const error = APIresponse.error ? APIresponse.error : 'Error deleting post';
-    return { ...state, error, isLoading: false };
-  }
   const filteredComments = state.comments.filter((comment) => comment.id !== id);
   return { ...state, comments: [...filteredComments], isLoading: false };
 };

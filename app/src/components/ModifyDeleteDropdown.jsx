@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -32,28 +32,42 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 ));
 
 // custom card dropdown, it contains delete and modify actions
-export default function ModifyDeleteDropdown({ postId, commentId, deleteURL, setIsModifying }) {
+export default function ModifyDeleteDropdown({
+  postId,
+  commentId,
+  deleteURL,
+  setIsModifying,
+  setHasError,
+}) {
+  // Local states
+  const [isLoading, setIsLoading] = useState(false);
+
   // Global state
-  const { state, dispatch } = usePosts();
+  const { dispatch } = usePosts();
   const { commentsDispatch } = useComments();
   const { user } = useUser();
 
   // DELETE post or comment handler
   const handleDeleteElement = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setHasError(false);
     const response = await DELETERequest(deleteURL, e, user.Id);
-    // if (response.error) --> setHasError(true);
+    if (response.error || response.message === 'Failed to fetch') {
+      setHasError(true);
+    }
     if (response.message === 'Post deleted') {
       dispatch({ type: 'delete-post', payload: { response, postId } });
     } else if (response.message === 'Comment deleted') {
       commentsDispatch({ type: 'delete-comment', payload: { response, commentId } });
       dispatch({ type: 'decrease-comments-count', payload: { id: postId } });
     }
+    setIsLoading(false);
   };
 
   return (
     <>
-      {state.isLoading ? (
+      {isLoading ? (
         <Loader iconNumber={1} />
       ) : (
         <Dropdown>
@@ -82,4 +96,5 @@ ModifyDeleteDropdown.propTypes = {
   deleteURL: PropTypes.string.isRequired,
   setIsModifying: PropTypes.func.isRequired,
   commentId: PropTypes.number,
+  setHasError: PropTypes.func.isRequired,
 };

@@ -22,7 +22,7 @@ import { GETRequest, POSTRequest } from '../API/API';
 
 export default function PostCard({ post }) {
   // Hooks
-  const [setHasError] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [isModifyingPost, setIsModifyingPost] = useState(false);
 
@@ -105,7 +105,7 @@ export default function PostCard({ post }) {
 
       <Card className="mb-3 rounded-4">
         <Card.Body>
-          {commentsState.error && <AlertDismissible setHasError={setHasError} />}
+          {hasError && <AlertDismissible setHasError={setHasError} />}
 
           <div className="d-flex justify-content-between mb-1">
             <div className="d-flex flex-row align-items-center ">

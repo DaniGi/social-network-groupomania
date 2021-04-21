@@ -28,7 +28,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
   // Custom hooks
   const isScrollBlocked = useScrollBlock();
 
-  // Local State
+  // Local States
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 

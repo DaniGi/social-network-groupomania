@@ -18,10 +18,6 @@ const addPost = (state, APIresponse, user) => {
 };
 
 const deletePost = (state, APIresponse, id) => {
-  if (!APIresponse || APIresponse.error) {
-    const error = APIresponse.error ? APIresponse.error : 'Error deleting post';
-    return { ...state, error, isLoading: false };
-  }
   const filteredPosts = state.posts.filter((post) => post.id !== id);
   return { ...state, posts: [...filteredPosts], isLoading: false };
 };
