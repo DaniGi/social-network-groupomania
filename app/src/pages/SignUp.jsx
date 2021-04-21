@@ -29,9 +29,10 @@ export default function SignUp() {
     setIsEmailUnique(true);
     setIsUsernameUnique(true);
     setHasError(false);
-    setIsLoading(true);
 
+    setIsLoading(true);
     const response = await POSTRequest(SIGNUP_URL, e, user.Id);
+    setIsLoading(false);
 
     if (response.message === 'Added User') {
       history.push('/login');
@@ -42,7 +43,6 @@ export default function SignUp() {
     } else if (response.error) {
       setHasError(true);
     }
-    setIsLoading(false);
   };
 
   return (

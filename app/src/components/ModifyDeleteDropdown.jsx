@@ -53,6 +53,7 @@ export default function ModifyDeleteDropdown({
     setIsLoading(true);
     setHasError(false);
     const response = await DELETERequest(deleteURL, e, user.Id);
+    setIsLoading(false);
     if (response.error || response.message === 'Failed to fetch') {
       setHasError(true);
     }
@@ -62,7 +63,6 @@ export default function ModifyDeleteDropdown({
       commentsDispatch({ type: 'delete-comment', payload: { response, commentId } });
       dispatch({ type: 'decrease-comments-count', payload: { id: postId } });
     }
-    setIsLoading(false);
   };
 
   return (

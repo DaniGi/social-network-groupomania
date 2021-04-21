@@ -31,9 +31,10 @@ export default function LogIn() {
     setIsPasswordCorrect(true);
     setHasError(false);
     setIsUserActive(true);
-    setIsLoading(true);
 
+    setIsLoading(true);
     const response = await POSTRequest(LOGIN_URL, e, user.Id);
+    setIsLoading(false);
 
     switch (response.error) {
       case 'User not found':
@@ -53,10 +54,8 @@ export default function LogIn() {
     if (response.token) {
       localStorage.setItem('token', response.token);
       localStorage.setItem('userId', response.userId);
-      dispatchUser({ type: 'get-user', payload: { response } });
+      dispatchUser({ type: 'get-user', payload: { response, userId: response.userId } });
     }
-
-    setIsLoading(false);
   };
 
   return (
