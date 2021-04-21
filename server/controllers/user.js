@@ -76,7 +76,7 @@ exports.login = async (req, res) => {
 
 exports.verify = async (req, res) => {
   try {
-    const user = await User.findOne({ where: { id: req.body.userId } });
+    const user = await User.findOne({ where: { id: req.body.UserId } });
 
     if (!user) {
       res.status(401).json({ error: 'User not found' });
@@ -85,7 +85,7 @@ exports.verify = async (req, res) => {
 
     // user likes
     const likes = await Likes.findAll({
-      where: { userId: user.id },
+      where: { UserId: user.id },
       attributes: ['postId'],
     });
 

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -8,7 +8,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import PostCard from '../components/PostCard';
 import ModifyCardProfilePicture from '../components/ModifyCardProfilePicture';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { usePosts } from '../contexts/PostsContext';
 
 // import { CommentsContext } from '../contexts/CommentsContext';
@@ -18,7 +18,7 @@ import DeleteUserCard from '../components/DeleteUserCard';
 
 export default function User() {
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { state } = usePosts();
   // const { setComments } = useContext(CommentsContext);
   // const { setSearchValue } = useContext(SearchContext);

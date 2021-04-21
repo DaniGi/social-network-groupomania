@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
@@ -9,7 +8,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { usePosts } from '../contexts/PostsContext';
 
 import AutogrowTextarea from './AutogrowTextarea';
@@ -35,7 +34,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
   const watchPicture = watch('picture', '');
 
   // Global States, user = { id, username, isLogged, isAdmin}
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { state, dispatch } = usePosts();
   const { commentsDispatch } = useComments();
 

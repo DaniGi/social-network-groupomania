@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { SearchContext } from '../contexts/SearchContext';
 import { usePosts } from '../contexts/PostsContext';
 
@@ -18,7 +18,7 @@ import { useLogout } from '../hooks/useLogout';
 
 function Header({ location }) {
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { setSearchValue } = useContext(SearchContext);
   const { state, dispatch } = usePosts();
 

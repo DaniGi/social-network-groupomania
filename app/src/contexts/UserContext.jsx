@@ -1,74 +1,44 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-export const UserContext = createContext({
-  user: {
-    Id: '',
-    name: '',
-    IsLogged: '',
-    isAdmin: false,
-    likes: [],
-  },
-  setUser: () => {},
-});
+import { UserReducer, initialState } from '../reducers/UserReducer';
+import { POSTRequest } from '../API/API';
+
+const UserContext = createContext();
+
+export const useUser = () => {
+  return useContext(UserContext);
+};
 
 const VERIFY_TOKEN_URL = 'http://localhost:5000/auth/verify';
 
 const UserContextProvider = (props) => {
-  const [user, setUser] = useState({
-    Id: localStorage.getItem('userId') || '',
-    name: '',
-    isLogged: localStorage.getItem('token'),
-    isAdmin: false,
-    likes: [],
-    profilePicture: null,
-  });
+  const [user, dispatchUser] = useReducer(UserReducer, initialState);
 
-  // Set global user data
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-
-    if (!token) {
-      return {
-        Id: '',
-        name: '',
-        isLogged: false,
-        isAdmin: false,
-      };
+    async function fetchData() {
+      const userId = localStorage.getItem('userId') || '';
+      const response = await POSTRequest(VERIFY_TOKEN_URL, {}, userId);
+      if (response.error) {
+        <Redirect to="/login" />;
+      } else {
+        dispatchUser({ type: 'get-user', payload: { response, userId } });
+      }
     }
 
-    // POST verify token data
-    const verifyTokenData = fetch(VERIFY_TOKEN_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ userId }),
-    });
-
-    verifyTokenData
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.error) {
-          <Redirect to="/login" />;
-        } else if (response.userName) {
-          setUser({
-            Id: userId,
-            name: response.userName,
-            isLogged: true,
-            isAdmin: response.isAdmin,
-            likes: response.likes,
-            profilePicture: response.profilePicture,
-          });
-        }
-      });
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    fetchData();
   }, []);
 
-  return <UserContext.Provider value={{ user, setUser }}>{props.children}</UserContext.Provider>;
+  const value = {
+    user,
+    dispatchUser,
+  };
+
+  return <UserContext.Provider value={value}>{props.children}</UserContext.Provider>;
 };
 
 UserContextProvider.propTypes = {

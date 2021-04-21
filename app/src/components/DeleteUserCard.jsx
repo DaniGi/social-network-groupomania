@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,7 @@ import Card from 'react-bootstrap/Card';
 
 import { useScrollBlock } from '../hooks/useScrollBlock'; // hook to allow/block scrolling
 import { useDELETERequest } from '../utils/useDELETERequest';
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import Loader from './Loader';
 import { useLogout } from '../hooks/useLogout';
 
@@ -21,7 +21,7 @@ export default function DeleteUserCard({ setIsDeletingUser }) {
   const logOut = useLogout();
 
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   // Local hooks
   const [hasRequestError, setHasRequestError] = useState(false);

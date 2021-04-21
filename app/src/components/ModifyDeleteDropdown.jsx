@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { usePosts } from '../contexts/PostsContext';
 // import { CommentsContext } from '../contexts/CommentsContext';
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 
 import Loader from './Loader';
 
@@ -36,7 +36,7 @@ export default function ModifyDeleteDropdown({ postId, commentId, deleteURL, set
   // Global state
   const { state, dispatch } = usePosts();
   const { commentsDispatch } = useComments();
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   // DELETE post or comment handler
   const handleDeleteElement = async (e) => {

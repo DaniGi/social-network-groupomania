@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -8,7 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { usePosts } from '../contexts/PostsContext';
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 
 import AutogrowTextarea from './AutogrowTextarea';
 import Loader from './Loader';
@@ -24,7 +23,7 @@ export default function CreatePostCard() {
   const isScrollBlocked = useScrollBlock();
 
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { state, dispatch } = usePosts();
 
   const { register, errors, watch, handleSubmit } = useForm({

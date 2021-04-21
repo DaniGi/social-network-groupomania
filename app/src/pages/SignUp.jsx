@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 
 import LoginSignupForm from '../components/LoginSignupForm';
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { usePOSTRequest } from '../utils/usePOSTRequest';
 
 const SIGNUP_URL = 'http://localhost:5000/auth/signup';
@@ -16,7 +16,7 @@ const PAGE = {
 };
 
 export default function SignUp() {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const history = useHistory();
 
   // States used to check all possible errors and to show custom error message

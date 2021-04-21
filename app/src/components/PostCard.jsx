@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { useComments } from '../contexts/CommentsContext';
 import { usePosts } from '../contexts/PostsContext';
 
@@ -30,7 +30,7 @@ export default function PostCard({ post }) {
   const { handleSubmit, register } = useForm();
 
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { commentsState, commentsDispatch } = useComments();
   const { dispatch } = usePosts();
 

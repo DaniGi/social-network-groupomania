@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 
 import ModifyDeleteDropdown from './ModifyDeleteDropdown';
 import ModifyCard from './ModifyCard';
@@ -9,7 +9,7 @@ import ModifyCard from './ModifyCard';
 import { getDateFormatted } from '../utils/dateFormatting';
 
 export default function CommentBox({ comment, postId, setHasError }) {
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const [isModifyingComment, setIsModifyingComment] = useState(false);
 
   return (

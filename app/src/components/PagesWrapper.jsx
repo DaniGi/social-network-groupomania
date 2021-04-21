@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -7,13 +6,13 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Loader from './Loader';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { usePosts } from '../contexts/PostsContext';
 // import { CommentsContext } from '../contexts/CommentsContext';
 
 export default function PageWrapper(props) {
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
   const { state } = usePosts();
   // const { setComments } = useContext(CommentsContext);
 

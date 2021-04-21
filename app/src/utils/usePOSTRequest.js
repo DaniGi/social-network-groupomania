@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import { useState } from 'react';
+import { useUser } from '../contexts/UserContext';
 
 export function usePOSTRequest(POST_URL) {
   // Global states
-  const { user } = useContext(UserContext);
+  const { user } = useUser(useUser);
 
   // Hooks
   const [data, setData] = useState([]);

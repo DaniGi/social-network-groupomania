@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 
 import Loader from './Loader';
 
@@ -24,7 +24,7 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
   const isScrollBlocked = useScrollBlock();
 
   // Global States, user = { id, username, isLogged, isAdmin}
-  const { user } = useContext(UserContext);
+  const { user } = useUser();
 
   // Form hooks
   const { watch, errors, register, handleSubmit } = useForm({
