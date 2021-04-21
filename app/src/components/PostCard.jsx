@@ -39,10 +39,17 @@ export default function PostCard({ post }) {
   useEffect(() => {
     async function fetchData() {
       const response = await GETRequest(`http://localhost:5000/posts/${post.id}/comments`);
-      commentsDispatch({ type: 'get-post-comments', payload: { response } });
+      if (response.error || response.message === 'Failed to fetch') {
+        setHasError(true);
+      } else {
+        commentsDispatch({ type: 'get-post-comments', payload: { response } });
+      }
     }
+    setIsLoading(true);
+    setHasError(false);
     commentsDispatch({ type: 'is-loading' });
     fetchData();
+    setIsLoading(false);
   }, [commentsDispatch, post.id]);
 
   const handleAddComment = async (data, e) => {

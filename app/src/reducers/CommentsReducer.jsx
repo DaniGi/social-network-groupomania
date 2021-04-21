@@ -1,27 +1,22 @@
 const getPostComments = (state, APIresponse) => {
-  if (APIresponse.message || APIresponse.error) {
-    const error = `error: ${APIresponse.message || APIresponse.error}`;
-    return { ...state, error, isLoading: false };
-  }
   // Checking duplicate comments
   const commentsIds = state.comments.map((comment) => comment.id);
   const newComments = APIresponse.comments.filter((comment) => !commentsIds.includes(comment.id));
 
-  return { ...state, comments: [...state.comments, ...newComments], isLoading: false };
+  return { ...state, comments: [...state.comments, ...newComments] };
 };
 
 const addComment = (state, APIresponse) => {
   return {
     ...state,
     comments: [...state.comments, APIresponse.comment],
-    isLoading: false,
     isCreating: false,
   };
 };
 
 const deleteComment = (state, APIresponse, id) => {
   const filteredComments = state.comments.filter((comment) => comment.id !== id);
-  return { ...state, comments: [...filteredComments], isLoading: false };
+  return { ...state, comments: [...filteredComments] };
 };
 
 const modifyComment = (state, APIresponse, id, content) => {
@@ -32,13 +27,11 @@ const modifyComment = (state, APIresponse, id, content) => {
     return comment;
   });
 
-  return { ...state, comments, isLoading: false };
+  return { ...state, comments };
 };
 
 export const initialState = {
   comments: [],
-  isLoading: false,
-  error: null,
 };
 
 export function CommentsReducer(state, action) {
@@ -53,11 +46,7 @@ export function CommentsReducer(state, action) {
       const { response, id, content } = action.payload;
       return modifyComment(state, response, id, content);
     }
-    case 'is-loading':
-      return { ...state, isLoading: true };
-    case 'action-completed':
-      return { ...state, isLoading: false };
     default:
-      throw new Error();
+      return state;
   }
 }
