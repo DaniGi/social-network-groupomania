@@ -40,15 +40,15 @@ This project is created with:
 
 First, clone the repository: 
 
-`git clone https://github.com/DaniGi/DanieleGioria_7_03122020.git`
+`git clone https://github.com/DaniGi/social-network-groupomania.git`
 
 Then, `cd` into the project's root directory:
 
-`cd ./DanieleGioria_7_03122020`
+`cd ./social-network-groupomania`
 
 ### **Back-end**
 
-In the project's root directory, named _DanieleGioria_7_03122020_, type:
+In the project's root directory, named _social-network-groupomania_, type:
 
 ```
 cd ./backend
@@ -90,7 +90,7 @@ Finally, type: `npm start`
 
 ### **Front-end**
 
-In the project's root directory, named _DanieleGioria_7_03122020_, type:
+In the project's root directory, named _social-network-groupomania_, type:
 
 ```
 cd ./frontend
