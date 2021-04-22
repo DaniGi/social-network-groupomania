@@ -41,7 +41,7 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
 
   // Global States, user = { id, username, isLogged, isAdmin}
   const { userState } = useUser();
-  const { dispatch } = usePosts();
+  const { postsDispatch } = usePosts();
   const { commentsDispatch } = useComments();
 
   const handleModifyElement = async (data, e) => {
@@ -53,7 +53,10 @@ export default function ModifyCard({ element, title, modifyURL, setIsModifying }
       setError(true);
     } else {
       if (title === 'post') {
-        dispatch({ type: 'modify-post', payload: { response, user: userState.user, element } });
+        postsDispatch({
+          type: 'modify-post',
+          payload: { response, user: userState.user, element },
+        });
       }
       if (title === 'comment') {
         commentsDispatch({

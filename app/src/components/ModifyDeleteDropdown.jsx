@@ -42,7 +42,7 @@ export default function ModifyDeleteDropdown({
   const [isLoading, setIsLoading] = useState(false);
 
   // Global state
-  const { dispatch } = usePosts();
+  const { postsDispatch } = usePosts();
   const { commentsDispatch } = useComments();
   const { userState } = useUser();
 
@@ -57,10 +57,10 @@ export default function ModifyDeleteDropdown({
       setHasError(true);
     }
     if (response.message === 'Post deleted') {
-      dispatch({ type: 'delete-post', payload: { response, postId } });
+      postsDispatch({ type: 'delete-post', payload: { response, postId } });
     } else if (response.message === 'Comment deleted') {
       commentsDispatch({ type: 'delete-comment', payload: { response, commentId } });
-      dispatch({ type: 'decrease-comments-count', payload: { id: postId } });
+      postsDispatch({ type: 'decrease-comments-count', payload: { id: postId } });
     }
   };
 

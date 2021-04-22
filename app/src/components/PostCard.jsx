@@ -33,7 +33,7 @@ export default function PostCard({ post }) {
   // Global states
   const { userState, userDispatch } = useUser();
   const { commentsState, commentsDispatch } = useComments();
-  const { dispatch } = usePosts();
+  const { postsDispatch } = usePosts();
 
   // GETting post's comments
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function PostCard({ post }) {
       setHasError(true);
     } else {
       commentsDispatch({ type: 'add-comment', payload: { response } });
-      dispatch({ type: 'increase-comments-count', payload: { id: post.id } });
+      postsDispatch({ type: 'increase-comments-count', payload: { id: post.id } });
     }
 
     setIsLoading(false);
@@ -86,10 +86,10 @@ export default function PostCard({ post }) {
 
     if (response.message === 'Liked') {
       userDispatch({ type: 'add-like', payload: { postId: post.id } });
-      dispatch({ type: 'increase-likes-count', payload: { id: post.id } });
+      postsDispatch({ type: 'increase-likes-count', payload: { id: post.id } });
     } else if (response.message === 'Unliked') {
       userDispatch({ type: 'remove-like', payload: { postId: post.id } });
-      dispatch({ type: 'decrease-likes-count', payload: { id: post.id } });
+      postsDispatch({ type: 'decrease-likes-count', payload: { id: post.id } });
     }
   };
 

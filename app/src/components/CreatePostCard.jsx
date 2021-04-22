@@ -31,7 +31,7 @@ export default function CreatePostCard({ setIsCreating }) {
 
   // Global states
   const { userState } = useUser();
-  const { dispatch } = usePosts();
+  const { postsDispatch } = usePosts();
 
   const { register, errors, watch, handleSubmit } = useForm({
     resolver: yupResolver(fileValidationSchema),
@@ -46,7 +46,7 @@ export default function CreatePostCard({ setIsCreating }) {
     if (response.error || response.message === 'Failed to fetch') {
       setError(true);
     } else {
-      dispatch({ type: 'add-post', payload: { response, user: userState.user } });
+      postsDispatch({ type: 'add-post', payload: { response, user: userState.user } });
       setIsCreating(false);
     }
     setIsLoading(false);

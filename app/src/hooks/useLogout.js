@@ -11,7 +11,7 @@ export function useLogout() {
   const history = useHistory();
   const { userDispatch } = useUser();
   const { commentsDispatch } = useComments();
-  const { dispatch } = usePosts();
+  const { postsDispatch } = usePosts();
   const { setSearchValue } = useContext(SearchContext);
 
   // when user click Log Out button, clear localStorage, user, comments and posts
@@ -19,7 +19,7 @@ export function useLogout() {
     localStorage.clear();
     userDispatch({ type: 'clear-user' });
     commentsDispatch({ type: 'clear-comments' });
-    dispatch({ type: 'clear-posts' });
+    postsDispatch({ type: 'clear-posts' });
     setSearchValue('');
     history.push('/login');
   }

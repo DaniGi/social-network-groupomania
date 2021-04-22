@@ -16,13 +16,13 @@ import DeleteUserCard from '../components/DeleteUserCard';
 export default function User() {
   // Global states
   const { userState } = useUser();
-  const { state } = usePosts();
+  const { postsState } = usePosts();
 
   // hook
   const [isDeletingUser, setIsDeletingUser] = useState(false);
   const [isModifyingProfilePicture, setIsModifyingProfilePicture] = useState(false);
 
-  const userPosts = state.posts.filter((post) => post.username === userState.user.name);
+  const userPosts = postsState.posts.filter((post) => post.username === userState.user.name);
 
   return (
     <>

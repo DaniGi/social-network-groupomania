@@ -21,7 +21,7 @@ export default function PageWrapper(props) {
 
   // Global states
   const { userState } = useUser();
-  const { state, dispatch } = usePosts();
+  const { postsState, postsDispatch } = usePosts();
 
   // Getting all posts
   useEffect(() => {
@@ -31,20 +31,20 @@ export default function PageWrapper(props) {
       if (response.error || response.message === 'Failed to fetch') {
         setHasError(true);
       } else {
-        dispatch({ type: 'get-all-posts', payload: { response } });
+        postsDispatch({ type: 'get-all-posts', payload: { response } });
       }
     }
     setIsLoading(true);
     setHasError(false);
     fetchData();
-  }, [dispatch]);
+  }, [postsDispatch]);
 
   return (
     <>
       <Container fluid className="py-4 py-xxl-6">
         <Row className="d-flex justify-content-center">
           <Col sm={10} md={8} lg={6} xl={6} className="col-xxl-4">
-            {(isLoading || (state.posts.length === 0 && !hasError)) && <Loader />}
+            {(isLoading || (postsState.posts.length === 0 && !hasError)) && <Loader />}
             {!isLoading && hasError && (
               <div className="text-danger text-center pt-3 fw-bold">
                 <i className="fas fa-exclamation rounded-circle border border-2 border-danger py-2 px-25" />{' '}

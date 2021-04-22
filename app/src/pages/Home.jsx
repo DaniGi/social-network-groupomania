@@ -9,14 +9,14 @@ import { filterPosts } from '../utils/filterPosts';
 
 export default function Home() {
   // Global states
-  const { state } = usePosts();
+  const { postsState } = usePosts();
   const { searchValue } = useContext(SearchContext);
 
-  const filteredPost = filterPosts(state.posts, searchValue);
+  const filteredPost = filterPosts(postsState.posts, searchValue);
 
   return (
     <>
-      {state.posts.length && filteredPost.length === 0 ? (
+      {postsState.posts.length && filteredPost.length === 0 ? (
         <div className="text-muted">
           No posts found for your search:{' '}
           <span className="fw-bold text-primary">{searchValue}</span>

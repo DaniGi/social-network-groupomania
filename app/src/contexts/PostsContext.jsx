@@ -9,11 +9,11 @@ export const usePosts = () => {
 };
 
 const PostsContextProvider = (props) => {
-  const [state, dispatch] = useReducer(PostsReducer, initialState);
+  const [postsState, postsDispatch] = useReducer(PostsReducer, initialState);
 
   const value = {
-    state,
-    dispatch,
+    postsState,
+    postsDispatch,
   };
 
   return <PostsContext.Provider value={value}>{props.children}</PostsContext.Provider>;
