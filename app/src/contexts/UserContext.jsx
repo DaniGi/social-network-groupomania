@@ -16,12 +16,11 @@ const VERIFY_TOKEN_URL = 'http://localhost:5000/auth/verify';
 const UserContextProvider = (props) => {
   const [userState, userDispatch] = useReducer(UserReducer, initialState);
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
     async function fetchData() {
       const userId = localStorage.getItem('userId') || '';
       const response = await POSTRequest(VERIFY_TOKEN_URL, {}, userId);
-      if (response.error) {
+      if (response.error || response.message === 'Failed to fetch') {
         <Redirect to="/login" />;
       } else {
         userDispatch({ type: 'get-user', payload: { response, userId } });

@@ -28,6 +28,7 @@ export default function PageWrapper(props) {
   useEffect(() => {
     async function fetchData() {
       const response = await GETRequest(GET_ALL_POSTS_URL);
+      setIsLoading(false);
       if (response.error || response.message === 'Failed to fetch') {
         setHasError(true);
       } else {
@@ -37,7 +38,6 @@ export default function PageWrapper(props) {
     setIsLoading(true);
     setHasError(false);
     fetchData();
-    setIsLoading(false);
   }, [dispatch]);
 
   return (
