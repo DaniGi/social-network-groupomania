@@ -57,7 +57,7 @@ export default function PageWrapper(props) {
           </Col>
         </Row>
       </Container>
-      {!userState.isLogged && !userState.isLoading && <Redirect to="/login" />}
+      {!userState.user.isLogged && !userState.user.isLoading && <Redirect to="/login" />}
     </>
   );
 }
