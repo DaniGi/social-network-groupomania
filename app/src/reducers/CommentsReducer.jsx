@@ -46,6 +46,8 @@ export function CommentsReducer(state, action) {
       const { response, id, content } = action.payload;
       return modifyComment(state, response, id, content);
     }
+    case 'clear-comments':
+      return initialState;
     default:
       return state;
   }

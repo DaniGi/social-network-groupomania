@@ -84,6 +84,8 @@ export function PostsReducer(state, action) {
       return increaseLikesCount(state, action.payload.id);
     case 'decrease-likes-count':
       return decreaseLikesCount(state, action.payload.id);
+    case 'clear-posts':
+      return initialState;
     default:
       return state;
   }
