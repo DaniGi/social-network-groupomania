@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { usePosts } from '../contexts/PostsContext';
-// import { CommentsContext } from '../contexts/CommentsContext';
 import { useUser } from '../contexts/UserContext';
+import { useComments } from '../contexts/CommentsContext';
 
 import Loader from './Loader';
 
 import { DELETERequest } from '../API/API';
-import { useComments } from '../contexts/CommentsContext';
 
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu

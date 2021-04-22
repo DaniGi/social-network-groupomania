@@ -9,7 +9,6 @@ import Loader from './Loader';
 
 import { useUser } from '../contexts/UserContext';
 import { usePosts } from '../contexts/PostsContext';
-// import { CommentsContext } from '../contexts/CommentsContext';
 
 import { GETRequest } from '../API/API';
 

@@ -11,26 +11,16 @@ import ModifyCardProfilePicture from '../components/ModifyCardProfilePicture';
 import { useUser } from '../contexts/UserContext';
 import { usePosts } from '../contexts/PostsContext';
 
-// import { CommentsContext } from '../contexts/CommentsContext';
-// import { SearchContext } from '../contexts/SearchContext';
-
 import DeleteUserCard from '../components/DeleteUserCard';
 
 export default function User() {
   // Global states
   const { userState } = useUser();
   const { state } = usePosts();
-  // const { setComments } = useContext(CommentsContext);
-  // const { setSearchValue } = useContext(SearchContext);
 
   // hook
   const [isDeletingUser, setIsDeletingUser] = useState(false);
   const [isModifyingProfilePicture, setIsModifyingProfilePicture] = useState(false);
-
-  // useEffect(() => {
-  //   setComments([]);
-  //   setSearchValue('');
-  // }, [setComments]);
 
   const userPosts = state.posts.filter((post) => post.username === userState.user.name);
 
