@@ -35,15 +35,16 @@ export const initialState = {
 };
 
 export function CommentsReducer(state, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case 'get-post-comments':
-      return getPostComments(state, action.payload.response);
+      return getPostComments(state, payload.response);
     case 'add-comment':
-      return addComment(state, action.payload.response);
+      return addComment(state, payload.response);
     case 'delete-comment':
-      return deleteComment(state, action.payload.response, action.payload.commentId);
+      return deleteComment(state, payload.response, payload.commentId);
     case 'modify-comment': {
-      const { response, id, content } = action.payload;
+      const { response, id, content } = payload;
       return modifyComment(state, response, id, content);
     }
     case 'clear-comments':

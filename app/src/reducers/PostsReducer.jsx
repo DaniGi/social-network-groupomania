@@ -67,23 +67,24 @@ export const initialState = {
 };
 
 export function PostsReducer(state, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case 'get-all-posts':
-      return getAllPosts(state, action.payload.response);
+      return getAllPosts(state, payload.response);
     case 'add-post':
-      return addPost(state, action.payload.response, action.payload.user);
+      return addPost(state, payload.response, payload.user);
     case 'delete-post':
-      return deletePost(state, action.payload.response, action.payload.postId);
+      return deletePost(state, payload.response, payload.postId);
     case 'modify-post':
-      return modifyPost(state, action.payload.response, action.payload.element);
+      return modifyPost(state, payload.response, payload.element);
     case 'increase-comments-count':
-      return increaseCommentsCount(state, action.payload.id);
+      return increaseCommentsCount(state, payload.id);
     case 'decrease-comments-count':
-      return decreaseCommentsCount(state, action.payload.id);
+      return decreaseCommentsCount(state, payload.id);
     case 'increase-likes-count':
-      return increaseLikesCount(state, action.payload.id);
+      return increaseLikesCount(state, payload.id);
     case 'decrease-likes-count':
-      return decreaseLikesCount(state, action.payload.id);
+      return decreaseLikesCount(state, payload.id);
     case 'clear-posts':
       return initialState;
     default:

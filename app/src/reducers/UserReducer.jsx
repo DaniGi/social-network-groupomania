@@ -51,19 +51,20 @@ export const initialState = {
 };
 
 export function UserReducer(state, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case 'get-user':
-      return getUser(state, action.payload.response, action.payload.userId);
+      return getUser(state, payload.response, payload.userId);
     case 'clear-user':
       return initialState;
     case 'toggle-is-loading':
       return { ...state, isLoading: !state.isLoading };
     case 'add-like':
-      return addLike(state, action.payload.postId);
+      return addLike(state, payload.postId);
     case 'remove-like':
-      return removeLike(state, action.payload.postId);
+      return removeLike(state, payload.postId);
     case 'modify-profile-picture':
-      return modifyProfilePicture(state, action.payload.profilePicture);
+      return modifyProfilePicture(state, payload.profilePicture);
     default:
       return state;
   }
