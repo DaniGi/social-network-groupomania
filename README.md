@@ -3,11 +3,11 @@
 Enterprise social network designed to create a sense of community among employees.
 
 ## Table of Contents
-- [Tech Stack](#Tech&nbsp;Stack)
+- [Technologies](#technologies)
 - [Installation](#Installation)
-  - [Server](#Server)
+  - [Back-end](#Back-end)
   - [Database](#Database)
-  - [Client](#Client)
+  - [Front-end](#Front-end)
 - [Usage](#Usage)
   - [First Log In](#First-Log-In)
   - [Header](#Header)
@@ -15,146 +15,152 @@ Enterprise social network designed to create a sense of community among employee
   - [User page](#User-page)
 ---
 
-## Tech Stack
+## Technologies
 
-**Client**: React, Bootstrap, SASS
+This project is created with:
 
-**Server**: Node, Express
+- node: 12.16.1
 
-**Database**: MySQL, Sequelize
+- **Front-end**
+  - react: 17.0
+  - bootstrap: 5.0
+  - sass: 1.32
+
+- **Back-end**
+  - express: 4.17
+  - sequelize: 6.5
+
+- **Database**
+  - MySQL
+
 
 ---
 
 ## Installation
-<details>
-  <summary>Click to expand</summary>
-  
-  First, clone the repository: 
 
-  `git clone https://github.com/DaniGi/social-network-groupomania.git`
+First, clone the repository: 
 
-  Then, `cd` into the project's root directory:
+`git clone https://github.com/DaniGi/social-network-groupomania.git`
 
-  `cd ./social-network-groupomania`
+Then, `cd` into the project's root directory:
 
-  ### **Server**
+`cd ./social-network-groupomania`
 
-  In the project's root directory, named _social-network-groupomania_, type:
+### **Back-end**
 
-  ```
-  cd ./server
+In the project's root directory, named _social-network-groupomania_, type:
 
-  npm install
+```
+cd ./backend
 
-  mkdir images
+npm install
 
-  touch .env
-  ```
-  Then, add the following enviroment variables to the .env file:
+mkdir images
 
-  ```
-  MYSQL_PASSWORD=yourPassword
-  MYSQL_USER=yourUser
-  MYSQL_HOST=yourhost
+touch .env
+```
+Then, add the following enviroment variables to the .env file:
 
-  RANDOM_TOKEN_SECRET=yourRandomTokenSecret
-  ```
+```
+MYSQL_PASSWORD=yourPassword
+MYSQL_USER=yourUser
+MYSQL_HOST=yourhost
 
-  ### **Database**
+RANDOM_TOKEN_SECRET=yourRandomTokenSecret
+```
 
-  First make sure to have access to a MySQL Server (installed on your machine or running in a Docker container, for example).
+### **Database**
 
-  Then, edit the .env file enviroment variables
-  ```
-  MYSQL_PASSWORD=yourPassword
-  MYSQL_USER=yourUser
-  MYSQL_HOST=yourHost
-  ```
-  with:
-  - yourPassword replaced with the password you have to the MySQL Server
-  - yourUser replaced with the username you have to the MySQL Server
-  - yourHost replaced with your MySQL Server host
+First make sure to have access to a MySQL Server (installed on your machine or running in a Docker container, for example).
 
-  Then, login to your MySQL Server and copy/paste the content of `./server/MySQL/completeDB.sql`. This will create a database named _groupomania_ and its tables, populated with some test data.
+Then, edit the .env file enviroment variables
+```
+MYSQL_PASSWORD=yourPassword
+MYSQL_USER=yourUser
+MYSQL_HOST=yourHost
+```
+with:
+- yourPassword replaced with the password you have to the MySQL Server
+- yourUser replaced with the username you have to the MySQL Server
+- yourHost replaced with your MySQL Server host
 
-  Finally, type: `npm start`
+Then, login to your MySQL Server and copy/paste the content of `./backend/MySQL/completeDB.sql`. This will create a database named _groupomania_ and its tables, populated with some test data.
 
-  ### **Client**
+Finally, type: `npm start`
 
-  In the project's root directory, named _social-network-groupomania_, type:
+### **Front-end**
 
-  ```
-  cd ./client
+In the project's root directory, named _social-network-groupomania_, type:
 
-  npm install
+```
+cd ./frontend
 
-  npm start
-  ```
-  Visit http://localhost:3000.
-</details>
+npm install
+
+npm start
+```
+Visit http://localhost:3000.
 
 ---
 
 ## Usage
-<details>
-  <summary>Click to expand</summary>
-  
-  ### **First Log In**
 
-  The first time you visit http://localhost:3000 you will be automatically redirected to the Log In page.
+### **First Log In**
 
-  ![Log In page](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/login-page.JPG)
+The first time you visit http://localhost:3000 you will be automatically redirected to the Log In page.
 
-  There you can either Log In with user's credentials already in the database, for example:
+![Log In page](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/login-page.JPG)
 
-  ```
-  Email: admin@admin.fr
-  Password: adminadmin
-  ```
-   or Sign Up a new user and then Log In with the newly created user.
+There you can either Log In with user's credentials already in the database, for example:
 
-   ### **Header**
+```
+Email: admin@admin.fr
+Password: adminadmin
+```
+ or Sign Up a new user and then Log In with the newly created user.
 
-  ![header](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/header.JPG)
+ ### **Header**
 
-  1. Firm's logo with a link to the Home page
-  2. Search field that you can use to search posts by username
-  3. 'Create' button: when clicked it displays a card that let you create a new post with some text and/or an image/GIF
+![header](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/header.JPG)
 
-  ![create post card](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/create-post-xl.JPG)
+1. Firm's logo with a link to the Home page
+2. Search field that you can use to search posts by username
+3. 'Create' button: when clicked it displays a card that let you create a new post with some text and/or an image/GIF
 
-  4. 'Username' button with a link to the User page
-  5. 'Log Out' button that will end the current user's session and redirect you to the Log In page
+![create post card](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/create-post-xl.JPG)
 
-  ### **Home page**
+4. 'Username' button with a link to the User page
+5. 'Log Out' button that will end the current user's session and redirect you to the Log In page
 
-  ![Home page](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/home-page.JPG)
+### **Home page**
 
-  The Home page displays all users' posts. To each post corresponds a Card with:
+![Home page](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/home-page.JPG)
 
-  1. User name
-  2. Time passed since the post was created (it automatically updates on page new render)
-  3. Dropdown menu*
-  4. Post content
-  5. Number of likes
-  6. 'Like' button
-  7. 'Share' button (disabled)
-  8. 'Show/Hide comments' button to toggle comments' list
-  9. Comment textarea to write a new comment
-  10. Comment content with a dropdown menu*
+The Home page displays all users' posts. To each post corresponds a Card with:
 
-  *when clicked it displays two actions: modify and delete. Note that this dropdown menu is displayed only for posts/comments that the logged user has created, unless you are logged in as admin. The admin can modify and delete all posts and comments.
+1. User name
+2. Time passed since the post was created (it automatically updates on page new render)
+3. Dropdown menu*
+4. Post content
+5. Number of likes
+6. 'Like' button
+7. 'Share' button (disabled)
+8. 'Show/Hide comments' button to toggle comments' list
+9. Comment textarea to write a new comment
+10. Comment content with a dropdown menu*
 
-  ### **User page**
+*when clicked it displays two actions: modify and delete. Note that this dropdown menu is displayed only for posts/comments that the logged user has created, unless you are logged in as admin. The admin can modify and delete all posts and comments.
 
-  ![user page](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/user-page.JPG)
+### **User page**
 
-  The User page displays all user's posts.
+![user page](https://github.com/DaniGi/DanieleGioria_7_03122020/blob/main/screenshots/user-page.JPG)
 
-  It also display a user card with:
+The User page displays all user's posts.
 
-  1. User profile picture
-  2. User name
-  3. Number of post created
-  4. 'Delete Account' button
-</details>
+It also display a user card with:
+
+1. User profile picture
+2. User name
+3. Number of post created
+4. 'Delete Account' button
+
