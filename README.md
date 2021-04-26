@@ -3,36 +3,25 @@
 Enterprise social network designed to create a sense of community among employees.
 
 ## Table of Contents
-- [Technologies](#technologies)
+- [Tech Stack](#Tech&nbsp;Stack)
 - [Installation](#Installation)
-  - [Back-end](#Back-end)
+  - [Server](#Server)
   - [Database](#Database)
-  - [Front-end](#Front-end)
-- [Usage](#Usage)
+  - [Client](#Client)
+- [Usage and Screenshots](#Usage&nbsp;and&nbsp;Screenshots)
   - [First Log In](#First-Log-In)
   - [Header](#Header)
   - [Home page](#Home-page)
   - [User page](#User-page)
 ---
 
-## Technologies
+## Tech Stack
 
-This project is created with:
+**Client**: React, Bootstrap, SASS
 
-- node: 12.16.1
+**Server**: Node, Express
 
-- **Front-end**
-  - react: 17.0
-  - bootstrap: 5.0
-  - sass: 1.32
-
-- **Back-end**
-  - express: 4.17
-  - sequelize: 6.5
-
-- **Database**
-  - MySQL
-
+**Database**: MySQL, Sequelize
 
 ---
 
@@ -46,12 +35,12 @@ Then, `cd` into the project's root directory:
 
 `cd ./social-network-groupomania`
 
-### **Back-end**
+### **Server**
 
 In the project's root directory, named _social-network-groupomania_, type:
 
 ```
-cd ./backend
+cd ./server
 
 npm install
 
@@ -84,16 +73,16 @@ with:
 - yourUser replaced with the username you have to the MySQL Server
 - yourHost replaced with your MySQL Server host
 
-Then, login to your MySQL Server and copy/paste the content of `./backend/MySQL/completeDB.sql`. This will create a database named _groupomania_ and its tables, populated with some test data.
+Then, login to your MySQL Server and copy/paste the content of `./server/MySQL/completeDB.sql`. This will create a database named _groupomania_ and its tables, populated with some test data.
 
 Finally, type: `npm start`
 
-### **Front-end**
+### **Client**
 
 In the project's root directory, named _social-network-groupomania_, type:
 
 ```
-cd ./frontend
+cd ./client
 
 npm install
 
@@ -103,7 +92,7 @@ Visit http://localhost:3000.
 
 ---
 
-## Usage
+## Usage and Screenshots
 
 ### **First Log In**
 
