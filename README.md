@@ -3,12 +3,12 @@
 Enterprise social network designed to create a sense of community among employees.
 
 ## Table of Contents
-- [Tech Stack](#Tech&nbsp;Stack)
+- [Tech Stack](#tech-stack)
 - [Installation](#Installation)
   - [Server](#Server)
   - [Database](#Database)
   - [Client](#Client)
-- [Usage and Screenshots](#Usage&nbsp;and&nbsp;Screenshots)
+- [Usage and Screenshots](#usage-and-screenshots)
   - [First Log In](#First-Log-In)
   - [Header](#Header)
   - [Home page](#Home-page)
