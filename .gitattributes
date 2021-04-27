@@ -1,2 +1,2 @@
-app/public/css/* linguist-vendored
-app/public/css/prefixed/* linguist-vendored
+client/public/css/* linguist-vendored
+client/public/css/prefixed/* linguist-vendored
