@@ -62,6 +62,14 @@ const decreaseLikesCount = (state, id) => {
   return { ...state, posts };
 };
 
+const modifyProfilePicture = (state, profilePicture, username) => {
+  const posts = state.posts.map((post) => {
+    if (post.username === username) return { ...post, profilePicture };
+    return post;
+  });
+  return { posts };
+};
+
 export const initialState = {
   posts: [],
 };
@@ -85,6 +93,8 @@ export function PostsReducer(state, action) {
       return increaseLikesCount(state, payload.id);
     case 'decrease-likes-count':
       return decreaseLikesCount(state, payload.id);
+    case 'modify-profile-picture':
+      return modifyProfilePicture(state, payload.profilePicture, payload.username);
     case 'clear-posts':
       return initialState;
     default:

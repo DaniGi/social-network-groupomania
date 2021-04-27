@@ -8,7 +8,9 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
 import { useUser } from '../contexts/UserContext';
+import { usePosts } from '../contexts/PostsContext';
 
 import Loader from './Loader';
 
@@ -23,8 +25,9 @@ const capitalize = require('lodash/capitalize');
 export default function ModifyCard({ setIsModifying, title, modifyURL }) {
   const isScrollBlocked = useScrollBlock();
 
-  // Global States, user = { id, username, isLogged, isAdmin}
+  // Global States
   const { userState, userDispatch } = useUser();
+  const { postsDispatch } = usePosts();
 
   // Form hooks
   const { watch, errors, register, handleSubmit } = useForm({
@@ -51,6 +54,10 @@ export default function ModifyCard({ setIsModifying, title, modifyURL }) {
       userDispatch({
         type: 'modify-profile-picture',
         payload: { profilePicture: response.profile_picture },
+      });
+      postsDispatch({
+        type: 'modify-profile-picture',
+        payload: { profilePicture: response.profile_picture, username: userState.user.name },
       });
       setIsModifying(false);
     }
