@@ -1,6 +1,5 @@
 .eslintrc.js
 .vscode/
-/images
 yarn.lock
 
 # Logs
