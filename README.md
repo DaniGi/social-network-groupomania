@@ -44,8 +44,6 @@ cd ./server
 
 npm install
 
-mkdir images
-
 touch .env
 ```
 Then, add the following enviroment variables to the .env file:
